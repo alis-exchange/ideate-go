@@ -11,7 +11,6 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/fieldmaskpb"
-	v1 "open.alis.services/protobuf/alis/open/agent/v1"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -802,7 +801,7 @@ func (x *AddAgentRequest) GetAgentCardSource() isAddAgentRequest_AgentCardSource
 	return nil
 }
 
-func (x *AddAgentRequest) GetAgentCard() *v1.AgentCard {
+func (x *AddAgentRequest) GetAgentCard() *AgentCard {
 	if x != nil {
 		if x, ok := x.AgentCardSource.(*AddAgentRequest_AgentCard); ok {
 			return x.AgentCard
@@ -868,7 +867,7 @@ type isAddAgentRequest_AgentCardSource interface {
 
 type AddAgentRequest_AgentCard struct {
 	// The Agent Card to be added to the Stream
-	AgentCard *v1.AgentCard `protobuf:"bytes,5,opt,name=agent_card,json=agentCard,proto3,oneof"`
+	AgentCard *AgentCard `protobuf:"bytes,5,opt,name=agent_card,json=agentCard,proto3,oneof"`
 }
 
 type AddAgentRequest_AgentCardUri struct {
@@ -1525,7 +1524,7 @@ func (x *InitialiseAgentFeedbackRequest_AgentInteraction) GetAgentCardSource() i
 	return nil
 }
 
-func (x *InitialiseAgentFeedbackRequest_AgentInteraction) GetAgentCard() *v1.AgentCard {
+func (x *InitialiseAgentFeedbackRequest_AgentInteraction) GetAgentCard() *AgentCard {
 	if x != nil {
 		if x, ok := x.AgentCardSource.(*InitialiseAgentFeedbackRequest_AgentInteraction_AgentCard); ok {
 			return x.AgentCard
@@ -1556,7 +1555,7 @@ type isInitialiseAgentFeedbackRequest_AgentInteraction_AgentCardSource interface
 
 type InitialiseAgentFeedbackRequest_AgentInteraction_AgentCard struct {
 	// The Agent Card to be added to the Stream
-	AgentCard *v1.AgentCard `protobuf:"bytes,1,opt,name=agent_card,json=agentCard,proto3,oneof"`
+	AgentCard *AgentCard `protobuf:"bytes,1,opt,name=agent_card,json=agentCard,proto3,oneof"`
 }
 
 type InitialiseAgentFeedbackRequest_AgentInteraction_AgentCardUri struct {
@@ -1984,7 +1983,7 @@ var File_alis_ideate_ideate_proto protoreflect.FileDescriptor
 
 const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\n" +
-	"\x18alis/ideate/ideate.proto\x12\valis.ideate\x1a google/protobuf/field_mask.proto\x1a#google/longrunning/operations.proto\x1a\x1ealis/open/agent/v1/agent.proto\x1a\x16alis/ideate/idea.proto\x1a\x16alis/ideate/spec.proto\x1a\x18alis/ideate/stream.proto\"\xba\x01\n" +
+	"\x18alis/ideate/ideate.proto\x12\valis.ideate\x1a google/protobuf/field_mask.proto\x1a#google/longrunning/operations.proto\x1a\x1calis/ideate/agent_card.proto\x1a\x16alis/ideate/idea.proto\x1a\x16alis/ideate/spec.proto\x1a\x18alis/ideate/stream.proto\"\xba\x01\n" +
 	"\x0eAddNoteRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
 	"\x04idea\x18\x02 \x01(\tH\x00R\x04idea\x12\x16\n" +
@@ -2027,19 +2026,19 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\bfilename\x18\x01 \x01(\tR\bfilename\x12\x1b\n" +
 	"\tmime_type\x18\x02 \x01(\tR\bmimeType\x12\x1d\n" +
 	"\n" +
-	"upload_uri\x18\x03 \x01(\tR\tuploadUri\"\x9e\x02\n" +
+	"upload_uri\x18\x03 \x01(\tR\tuploadUri\"\x97\x02\n" +
 	"\x0fAddAgentRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
 	"\x04idea\x18\x02 \x01(\tH\x00R\x04idea\x12\x16\n" +
 	"\x05token\x18\x03 \x01(\tH\x00R\x05token\x123\n" +
-	"\x14contribution_session\x18\x04 \x01(\tH\x00R\x13contributionSession\x12>\n" +
+	"\x14contribution_session\x18\x04 \x01(\tH\x00R\x13contributionSession\x127\n" +
 	"\n" +
-	"agent_card\x18\x05 \x01(\v2\x1d.alis.open.agent.v1.AgentCardH\x01R\tagentCard\x12&\n" +
+	"agent_card\x18\x05 \x01(\v2\x16.alis.ideate.AgentCardH\x01R\tagentCard\x12&\n" +
 	"\x0eagent_card_uri\x18\x06 \x01(\tH\x01R\fagentCardUriB\x0f\n" +
 	"\rstream_targetB\x13\n" +
 	"\x11agent_card_source\"?\n" +
 	"\x10AddAgentResponse\x12+\n" +
-	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xd7\a\n" +
+	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xd0\a\n" +
 	"\x1eInitialiseAgentFeedbackRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
 	"\x04idea\x18\x02 \x01(\tH\x00R\x04idea\x12\x16\n" +
@@ -2048,10 +2047,10 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\x04note\x18\x06 \x01(\v20.alis.ideate.InitialiseAgentFeedbackRequest.NoteH\x01R\x04note\x12V\n" +
 	"\n" +
 	"audio_note\x18\a \x01(\v25.alis.ideate.InitialiseAgentFeedbackRequest.AudioNoteH\x01R\taudioNote\x12i\n" +
-	"\x11multi_file_upload\x18\b \x01(\v2;.alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUploadH\x01R\x0fmultiFileUpload\x1a\xc2\x01\n" +
-	"\x10AgentInteraction\x12>\n" +
+	"\x11multi_file_upload\x18\b \x01(\v2;.alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUploadH\x01R\x0fmultiFileUpload\x1a\xbb\x01\n" +
+	"\x10AgentInteraction\x127\n" +
 	"\n" +
-	"agent_card\x18\x01 \x01(\v2\x1d.alis.open.agent.v1.AgentCardH\x00R\tagentCard\x12&\n" +
+	"agent_card\x18\x01 \x01(\v2\x16.alis.ideate.AgentCardH\x00R\tagentCard\x12&\n" +
 	"\x0eagent_card_uri\x18\x02 \x01(\tH\x00R\fagentCardUri\x121\n" +
 	"\x14conversation_history\x18\x03 \x01(\tR\x13conversationHistoryB\x13\n" +
 	"\x11agent_card_source\x1a \n" +
@@ -2149,7 +2148,7 @@ var file_alis_ideate_ideate_proto_goTypes = []any{
 	(*InitialiseAgentFeedbackResponse_MultiFileUpload)(nil),      // 22: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
 	(*InitialiseAgentFeedbackResponse_MultiFileUpload_File)(nil), // 23: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
 	(*Stream)(nil),                          // 24: alis.ideate.Stream
-	(*v1.AgentCard)(nil),                    // 25: alis.open.agent.v1.AgentCard
+	(*AgentCard)(nil),                       // 25: alis.ideate.AgentCard
 	(*GetIdeaRequest)(nil),                  // 26: alis.ideate.GetIdeaRequest
 	(*GetStreamRequest)(nil),                // 27: alis.ideate.GetStreamRequest
 	(*GetSpecRequest)(nil),                  // 28: alis.ideate.GetSpecRequest
@@ -2167,7 +2166,7 @@ var file_alis_ideate_ideate_proto_depIdxs = []int32{
 	13, // 2: alis.ideate.AddMultiFileUploadRequest.files:type_name -> alis.ideate.AddMultiFileUploadRequest.File
 	24, // 3: alis.ideate.AddMultiFileUploadResponse.stream:type_name -> alis.ideate.Stream
 	14, // 4: alis.ideate.AddMultiFileUploadResponse.files:type_name -> alis.ideate.AddMultiFileUploadResponse.File
-	25, // 5: alis.ideate.AddAgentRequest.agent_card:type_name -> alis.open.agent.v1.AgentCard
+	25, // 5: alis.ideate.AddAgentRequest.agent_card:type_name -> alis.ideate.AgentCard
 	24, // 6: alis.ideate.AddAgentResponse.stream:type_name -> alis.ideate.Stream
 	15, // 7: alis.ideate.InitialiseAgentFeedbackRequest.agent_interaction:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction
 	16, // 8: alis.ideate.InitialiseAgentFeedbackRequest.note:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.Note
@@ -2179,7 +2178,7 @@ var file_alis_ideate_ideate_proto_depIdxs = []int32{
 	21, // 14: alis.ideate.InitialiseAgentFeedbackResponse.audio_note:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.AudioNote
 	22, // 15: alis.ideate.InitialiseAgentFeedbackResponse.multi_file_upload:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
 	0,  // 16: alis.ideate.TestIdeateAccessResponse.restriction:type_name -> alis.ideate.TestIdeateAccessResponse.Restriction
-	25, // 17: alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction.agent_card:type_name -> alis.open.agent.v1.AgentCard
+	25, // 17: alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction.agent_card:type_name -> alis.ideate.AgentCard
 	19, // 18: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.files:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.File
 	23, // 19: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.files:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
 	1,  // 20: alis.ideate.IdeateService.AddNote:input_type -> alis.ideate.AddNoteRequest
@@ -2218,6 +2217,7 @@ func file_alis_ideate_ideate_proto_init() {
 	if File_alis_ideate_ideate_proto != nil {
 		return
 	}
+	file_alis_ideate_agent_card_proto_init()
 	file_alis_ideate_idea_proto_init()
 	file_alis_ideate_spec_proto_init()
 	file_alis_ideate_stream_proto_init()
