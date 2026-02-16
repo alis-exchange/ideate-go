@@ -1,74 +1,94 @@
 # ideate-go
 
-Public type definitions and client stubs to interact with Alis Ideate
+[![Go Reference](https://pkg.go.dev/badge/github.com/alis-exchange/ideate-go/alis/ideate.svg)](https://pkg.go.dev/github.com/alis-exchange/ideate-go/alis/ideate)
+[![License](https://img.shields.io/github/license/alis-exchange/ideate-go)](LICENSE)
+
+Public Go client for interacting with the **Alis Ideate** API. This library provides type definitions and client stubs to easily integrate Alis Ideate features into your Go applications.
 
 ## 🚀 Installation
 
 ```bash
-go get github.com/ideate/ideate-go
+go get github.com/alis-exchange/ideate-go
 ```
 
-## Usage
+## 📚 Usage
+
+Here is a simple example of how to create a client and make a request to add a note to an idea using a collection token.
 
 ```go
 package main
 
 import (
-    "context"
-    "log"
+	"context"
+	"log"
 
-    "github.com/ideate/ideate-go/alis/ideate"
+	"google.golang.org/grpc/metadata"
+
+	"github.com/alis-exchange/ideate-go/alis/ideate"
 )
 
 func main() {
-    ctx := context.Background()
+	ctx := context.Background()
 
-    // Establish a new client
-    client, err := ideate.NewClient(ctx)
-    if err != nil {
-        log.Fatalf("failed to create client: %v", err)
-    }
+	// 1. Establish a new client
+	client, err := ideate.NewClient(ctx)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 
-    ctx := context.Background()
-    // TODO: add valid access token to outgoing requests. See the security requirements section for more information
-    ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "<USER_ACCESS_TOKEN>")
+	// 2. Prepare the context with authentication
+	// TODO: Replace with your actual user access token.
+	// See the "Security Requirements" section below for details on obtaining a token.
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer <USER_ACCESS_TOKEN>")
 
+	// 3. Define the target (e.g., using a Collection Token generated in Ideate)
+	token := "<COLLECTION_TOKEN>"
 
-    // The collection token
-    // Generated in Ideate
-    token := "<COLLECTION_TOKEN>"
+	// 4. Make a request
+	// In this example, we are adding a note to the stream identified by the token.
+	_, err = client.AddNote(ctx, &ideate.AddNoteRequest{
+		Content: "Hello, world!",
+		StreamTarget: &ideate.AddNoteRequest_Token{
+			Token: token,
+		},
+	})
+	if err != nil {
+		log.Fatalf("failed to add note: %v", err)
+	}
 
-    // Make a request
-    response, err := client.AddNote(ctx, &ideate.AddNoteRequest{
-        Content: "Hello, world!",
-        StreamTarget: &ideate.AddNoteRequest_Token{Token: token}
-    })
-    if err != nil {
-        log.Fatalf("failed to add note: %v", err)
-    }
-
+	log.Println("Successfully added note.")
 }
 ```
 
-## Security requirements
+## 🔐 Security Requirements
 
 ### OAuth Client Registration
 
-To ensure that API calls are made securely, we require that you register a new application.
+To ensure secure API interactions, you must register a new application with Alis:
 
-1. Open the [Alis Identity Management System](https://identity.alisx.com/apps) and sign in.
-2. Click on "New app"
-3. Go through the various steps to register your application, ensuring you copy the ClientID and ClientSecret.
-
-Once completed, you will be able to trigger the OAuth flow directly from your application.
-
-Make sure to setup the redirect URI of your application to handle the callback from the OAuth flow.
+1.  Log in to the [Alis Identity Management System](https://identity.alisx.com/apps).
+2.  Click **New app**.
+3.  Complete the registration steps and securely store your **Client ID** and **Client Secret**.
+4.  Configure the **Redirect URI** to handle the OAuth callback.
 
 ### OAuth Flow
 
-1. Trigger the OAuth flow by redirecting the user to the `https://identity.alisx.com/authorize?client_id=<CLIENT_ID>&redirect_uri=<REDIRECT_URI>` endpoint, where `<CLIENT_ID>` is the ClientID of your application and `<REDIRECT_URI>` is your application's endpoint that will handle the callback.
-2. The user will be prompted to log in and grant access to your application.
-3. The user will be redirected back to your application with an authorization code, at the `<REDIRECT_URI>` endpoint.
-4. Exchange the authorization code for an access token and refresh token.
+Authenticate users and obtain an access token using the standard OAuth 2.0 Authorization Code flow:
 
-In order for successful calls to be made to the Ideate API, you will need to provide the access token in the `Authorization` header of your requests.
+1.  **Authorize**: Redirect the user to the authorization endpoint:
+    ```
+    https://identity.alisx.com/authorize?client_id=<CLIENT_ID>&redirect_uri=<REDIRECT_URI>
+    ```
+2.  **Grant Access**: The user logs in and approves your application.
+3.  **Callback**: The user is redirected to your `<REDIRECT_URI>` with an `?code=...` parameter.
+4.  **Exchange**: Swap this authorization code for an **Access Token** and **Refresh Token**.
+
+Include the access token in the `Authorization` header of your gRPC calls as shown in the Usage example.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to open issues or submit pull requests.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
