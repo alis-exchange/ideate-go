@@ -8,7 +8,7 @@ This library provides type definitions and client stubs to easily integrate Alis
 
 # Usage
 
-Here is a simple example of how to create a client and make a request to add a note to an idea using a collection token.
+Here is a simple example of how to create a client and make a request to add a note to an idea using a collection key.
 
 	package main
 
@@ -35,15 +35,15 @@ Here is a simple example of how to create a client and make a request to add a n
 		// See the "Security Requirements" section below for details on obtaining a token.
 		ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer <USER_ACCESS_TOKEN>")
 
-		// 3. Define the target (e.g., using a Collection Token generated in Ideate)
-		token := "<COLLECTION_TOKEN>"
+		// 3. Define the target (e.g., using a Collection Key generated in Ideate)
+		key := "<COLLECTION_KEY>"
 
 		// 4. Make a request
-		// In this example, we are adding a note to the stream identified by the token.
+		// In this example, we are adding a note to the stream identified by the key.
 		_, err = client.AddNote(ctx, &ideate.AddNoteRequest{
 			Content: "Hello, world!",
-			StreamTarget: &ideate.AddNoteRequest_Token{
-				Token: token,
+			StreamTarget: &ideate.AddNoteRequest_Key{
+				CollectionKey: key,
 			},
 		})
 		if err != nil {
