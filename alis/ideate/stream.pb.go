@@ -138,7 +138,7 @@ type Stream struct {
 	// Associated Contribution Session if the Stream was added as part
 	// of a Contribution Session.
 	//
-	// Format: contributionSessions/*
+	// Format: ideas/*/contributionSessions/*
 	ContributionSession string `protobuf:"bytes,3,opt,name=contribution_session,json=contributionSession,proto3" json:"contribution_session,omitempty"`
 	// The state of the Stream
 	State Stream_State `protobuf:"varint,4,opt,name=state,proto3,enum=alis.ideate.Stream_State" json:"state,omitempty"`
