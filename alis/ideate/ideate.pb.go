@@ -529,8 +529,9 @@ type AddMultiFileUploadRequest struct {
 	// The set of files to upload
 	Files []*AddMultiFileUploadRequest_File `protobuf:"bytes,6,rep,name=files,proto3" json:"files,omitempty"`
 	// Origin for CORS purposes.
-	// Required if any file in `files` does not have `content_uri` set (i.e., requires client-side upload).
-	// Ignored if all files have `content_uri` set.
+	// Required if `content_uri` is NOT set on ANY file (i.e., all files require client-side upload).
+	// Must be empty if `content_uri` is set on ALL files.
+	// Mixing files with and without `content_uri` is not supported.
 	// For example: https://myconsole.myweb.com
 	OriginUri     string `protobuf:"bytes,7,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1782,8 +1783,9 @@ type InitialiseAgentFeedbackRequest_MultiFileUpload struct {
 	// The set of files to upload
 	Files []*InitialiseAgentFeedbackRequest_MultiFileUpload_File `protobuf:"bytes,2,rep,name=files,proto3" json:"files,omitempty"`
 	// Origin for CORS purposes.
-	// Required if any file in `files` does not have `content_uri` set (i.e., requires client-side upload).
-	// Ignored if all files have `content_uri` set.
+	// Required if `content_uri` is NOT set on ANY file (i.e., all files require client-side upload).
+	// Must be empty if `content_uri` is set on ALL files.
+	// Mixing files with and without `content_uri` is not supported.
 	// For example: https://myconsole.myweb.com
 	OriginUri     string `protobuf:"bytes,3,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
