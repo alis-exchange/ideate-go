@@ -285,13 +285,28 @@ type AddAudioNoteRequest struct {
 	//	*AddAudioNoteRequest_Token
 	//	*AddAudioNoteRequest_ContributionSession
 	StreamTarget isAddAudioNoteRequest_StreamTarget `protobuf_oneof:"stream_target"`
-	// The MIME type of the audio note
-	// supports all 'audio/*' types
+	// The MIME type of the audio note. Supports all 'audio/*' types.
+	//
+	// If `content_uri` is specified, the API will validate that the `Content-Type` header
+	// returned when fetching `content_uri` matches this field.
 	MimeType string `protobuf:"bytes,5,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
-	// Origin for cors purposes
-	// This is from where the resumable uploads will be made
+	// Origin for CORS purposes.
+	// Required if `content_uri` is NOT set.
+	// This is from where the resumable uploads will be made.
 	// For example: https://myconsole.myweb.com
-	OriginUri     string `protobuf:"bytes,6,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
+	OriginUri string `protobuf:"bytes,6,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
+	// The requestor-provided HTTPS URI containing the content (e.g. a signed GCS/S3/Azure URL).
+	//
+	// If this is provided:
+	// 1. The API will perform a server-side HTTP GET to fetch the content.
+	// 2. The `Content-Type` header returned by the URI MUST match the `mime_type` field.
+	// 3. The `origin_uri` field must be empty (mutually exclusive).
+	// 4. The `upload_uri` in the response will NOT be populated.
+	//
+	// If this is NOT provided:
+	// 1. The `origin_uri` field is required.
+	// 2. The response will contain an `upload_uri` for the client to upload content directly.
+	ContentUri    string `protobuf:"bytes,7,opt,name=content_uri,json=contentUri,proto3" json:"content_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -379,6 +394,13 @@ func (x *AddAudioNoteRequest) GetMimeType() string {
 func (x *AddAudioNoteRequest) GetOriginUri() string {
 	if x != nil {
 		return x.OriginUri
+	}
+	return ""
+}
+
+func (x *AddAudioNoteRequest) GetContentUri() string {
+	if x != nil {
+		return x.ContentUri
 	}
 	return ""
 }
@@ -506,8 +528,9 @@ type AddMultiFileUploadRequest struct {
 	Note string `protobuf:"bytes,5,opt,name=note,proto3" json:"note,omitempty"`
 	// The set of files to upload
 	Files []*AddMultiFileUploadRequest_File `protobuf:"bytes,6,rep,name=files,proto3" json:"files,omitempty"`
-	// Origin for cors purposes
-	// This is from where the resumable uploads will be made
+	// Origin for CORS purposes.
+	// Required if any file in `files` does not have `content_uri` set (i.e., requires client-side upload).
+	// Ignored if all files have `content_uri` set.
 	// For example: https://myconsole.myweb.com
 	OriginUri     string `protobuf:"bytes,7,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1372,17 +1395,28 @@ func (x *TestIdeateAccessResponse) GetRestriction() TestIdeateAccessResponse_Res
 	return TestIdeateAccessResponse_RESTRICTION_UNSPECIFIED
 }
 
-// A file to be uploaded
+// A file to be uploaded or fetched
 type AddMultiFileUploadRequest_File struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The filename of the file that will be uploaded
+	// The filename of the file.
 	// Example: my-data.xlsx
 	Filename string `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
-	// The file content type
-	// (https://datatracker.ietf.org/doc/html/rfc7231#section-3.1.1.5) For
-	// example: image/png If an object is stored without a Content-Type, it is
-	// served as application/octet-stream.
-	MimeType      string `protobuf:"bytes,2,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// The file content type (e.g., "image/png").
+	// See https://datatracker.ietf.org/doc/html/rfc7231#section-3.1.1.5.
+	//
+	// If `content_uri` is specified, the API will validate that the `Content-Type` header
+	// returned when fetching `content_uri` matches this field.
+	MimeType string `protobuf:"bytes,2,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// The requestor-provided HTTPS URI containing the content (e.g., a signed GCS/S3/Azure URL).
+	//
+	// If this is provided:
+	// 1. The API will perform a server-side HTTP GET to fetch the content.
+	// 2. The `Content-Type` header returned by the URI MUST match the `mime_type` field.
+	// 3. The response will NOT contain an `upload_uri` for this file.
+	//
+	// If this is NOT provided:
+	// 1. The response will contain an `upload_uri` for the client to upload content directly.
+	ContentUri    string `protobuf:"bytes,3,opt,name=content_uri,json=contentUri,proto3" json:"content_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1427,6 +1461,13 @@ func (x *AddMultiFileUploadRequest_File) GetFilename() string {
 func (x *AddMultiFileUploadRequest_File) GetMimeType() string {
 	if x != nil {
 		return x.MimeType
+	}
+	return ""
+}
+
+func (x *AddMultiFileUploadRequest_File) GetContentUri() string {
+	if x != nil {
+		return x.ContentUri
 	}
 	return ""
 }
@@ -1656,9 +1697,28 @@ func (x *InitialiseAgentFeedbackRequest_Note) GetContent() string {
 // Definition of AudioNote
 type InitialiseAgentFeedbackRequest_AudioNote struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The MIME type of the audio note
-	// supports all 'audio/*' types
-	MimeType      string `protobuf:"bytes,1,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// The MIME type of the audio note. Supports all 'audio/*' types.
+	//
+	// If `content_uri` is specified, the API will validate that the `Content-Type` header
+	// returned when fetching `content_uri` matches this field.
+	MimeType string `protobuf:"bytes,1,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// Origin for CORS purposes.
+	// Required if `content_uri` is NOT set.
+	// This is from where the resumable uploads will be made.
+	// For example: https://myconsole.myweb.com
+	OriginUri string `protobuf:"bytes,2,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
+	// The requestor-provided HTTPS URI containing the content (e.g. a signed GCS/S3/Azure URL).
+	//
+	// If this is provided:
+	// 1. The API will perform a server-side HTTP GET to fetch the content.
+	// 2. The `Content-Type` header returned by the URI MUST match the `mime_type` field.
+	// 3. The `origin_uri` field must be empty (mutually exclusive).
+	// 4. The response will NOT contain an `upload_uri`.
+	//
+	// If this is NOT provided:
+	// 1. The `origin_uri` field is required.
+	// 2. The response will contain an `upload_uri` for the client to upload content directly.
+	ContentUri    string `protobuf:"bytes,3,opt,name=content_uri,json=contentUri,proto3" json:"content_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1700,13 +1760,32 @@ func (x *InitialiseAgentFeedbackRequest_AudioNote) GetMimeType() string {
 	return ""
 }
 
+func (x *InitialiseAgentFeedbackRequest_AudioNote) GetOriginUri() string {
+	if x != nil {
+		return x.OriginUri
+	}
+	return ""
+}
+
+func (x *InitialiseAgentFeedbackRequest_AudioNote) GetContentUri() string {
+	if x != nil {
+		return x.ContentUri
+	}
+	return ""
+}
+
 // Definition of MultiFileUpload
 type InitialiseAgentFeedbackRequest_MultiFileUpload struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// A note added for context, in valid markdown
 	Note string `protobuf:"bytes,1,opt,name=note,proto3" json:"note,omitempty"`
 	// The set of files to upload
-	Files         []*InitialiseAgentFeedbackRequest_MultiFileUpload_File `protobuf:"bytes,2,rep,name=files,proto3" json:"files,omitempty"`
+	Files []*InitialiseAgentFeedbackRequest_MultiFileUpload_File `protobuf:"bytes,2,rep,name=files,proto3" json:"files,omitempty"`
+	// Origin for CORS purposes.
+	// Required if any file in `files` does not have `content_uri` set (i.e., requires client-side upload).
+	// Ignored if all files have `content_uri` set.
+	// For example: https://myconsole.myweb.com
+	OriginUri     string `protobuf:"bytes,3,opt,name=origin_uri,json=originUri,proto3" json:"origin_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1755,17 +1834,35 @@ func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) GetFiles() []*Initialis
 	return nil
 }
 
-// A file to be uploaded
+func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) GetOriginUri() string {
+	if x != nil {
+		return x.OriginUri
+	}
+	return ""
+}
+
+// A file to be uploaded or fetched
 type InitialiseAgentFeedbackRequest_MultiFileUpload_File struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The filename of the file that will be uploaded
+	// The filename of the file.
 	// Example: my-data.xlsx
 	Filename string `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
-	// The file content type
-	// (https://datatracker.ietf.org/doc/html/rfc7231#section-3.1.1.5) For
-	// example: image/png If an object is stored without a Content-Type, it is
-	// served as application/octet-stream.
-	MimeType      string `protobuf:"bytes,2,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// The file content type (e.g., "image/png").
+	// See https://datatracker.ietf.org/doc/html/rfc7231#section-3.1.1.5.
+	//
+	// If `content_uri` is specified, the API will validate that the `Content-Type` header
+	// returned when fetching `content_uri` matches this field.
+	MimeType string `protobuf:"bytes,2,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// The requestor-provided HTTPS URI containing the content (e.g., a signed GCS/S3/Azure URL).
+	//
+	// If this is provided:
+	// 1. The API will perform a server-side HTTP GET to fetch the content.
+	// 2. The `Content-Type` header returned by the URI MUST match the `mime_type` field.
+	// 3. The response will NOT contain an `upload_uri` for this file.
+	//
+	// If this is NOT provided:
+	// 1. The response will contain an `upload_uri` for the client to upload content directly.
+	ContentUri    string `protobuf:"bytes,3,opt,name=content_uri,json=contentUri,proto3" json:"content_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1810,6 +1907,13 @@ func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) GetFilename() stri
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) GetMimeType() string {
 	if x != nil {
 		return x.MimeType
+	}
+	return ""
+}
+
+func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) GetContentUri() string {
+	if x != nil {
+		return x.ContentUri
 	}
 	return ""
 }
@@ -2024,7 +2128,7 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\acontent\x18\x05 \x01(\tR\acontentB\x0f\n" +
 	"\rstream_target\">\n" +
 	"\x0fAddNoteResponse\x12+\n" +
-	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xe1\x01\n" +
+	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\x82\x02\n" +
 	"\x13AddAudioNoteRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
 	"\x04idea\x18\x02 \x01(\tH\x00R\x04idea\x12\x16\n" +
@@ -2032,12 +2136,14 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\x14contribution_session\x18\x04 \x01(\tH\x00R\x13contributionSession\x12\x1b\n" +
 	"\tmime_type\x18\x05 \x01(\tR\bmimeType\x12\x1d\n" +
 	"\n" +
-	"origin_uri\x18\x06 \x01(\tR\toriginUriB\x0f\n" +
+	"origin_uri\x18\x06 \x01(\tR\toriginUri\x12\x1f\n" +
+	"\vcontent_uri\x18\a \x01(\tR\n" +
+	"contentUriB\x0f\n" +
 	"\rstream_target\"b\n" +
 	"\x14AddAudioNoteResponse\x12+\n" +
 	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\x12\x1d\n" +
 	"\n" +
-	"upload_uri\x18\x02 \x01(\tR\tuploadUri\"\xe2\x02\n" +
+	"upload_uri\x18\x02 \x01(\tR\tuploadUri\"\x83\x03\n" +
 	"\x19AddMultiFileUploadRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
 	"\x04idea\x18\x02 \x01(\tH\x00R\x04idea\x12\x16\n" +
@@ -2046,10 +2152,12 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\x04note\x18\x05 \x01(\tR\x04note\x12A\n" +
 	"\x05files\x18\x06 \x03(\v2+.alis.ideate.AddMultiFileUploadRequest.FileR\x05files\x12\x1d\n" +
 	"\n" +
-	"origin_uri\x18\a \x01(\tR\toriginUri\x1a?\n" +
+	"origin_uri\x18\a \x01(\tR\toriginUri\x1a`\n" +
 	"\x04File\x12\x1a\n" +
 	"\bfilename\x18\x01 \x01(\tR\bfilename\x12\x1b\n" +
-	"\tmime_type\x18\x02 \x01(\tR\bmimeTypeB\x0f\n" +
+	"\tmime_type\x18\x02 \x01(\tR\bmimeType\x12\x1f\n" +
+	"\vcontent_uri\x18\x03 \x01(\tR\n" +
+	"contentUriB\x0f\n" +
 	"\rstream_target\"\xed\x01\n" +
 	"\x1aAddMultiFileUploadResponse\x12+\n" +
 	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\x12B\n" +
@@ -2070,7 +2178,7 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\rstream_targetB\x13\n" +
 	"\x11agent_card_source\"?\n" +
 	"\x10AddAgentResponse\x12+\n" +
-	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xd0\a\n" +
+	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xd0\b\n" +
 	"\x1eInitialiseAgentFeedbackRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
 	"\x04idea\x18\x02 \x01(\tH\x00R\x04idea\x12\x16\n" +
@@ -2087,15 +2195,23 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\x14conversation_history\x18\x03 \x01(\tR\x13conversationHistoryB\x13\n" +
 	"\x11agent_card_source\x1a \n" +
 	"\x04Note\x12\x18\n" +
-	"\acontent\x18\x01 \x01(\tR\acontent\x1a(\n" +
+	"\acontent\x18\x01 \x01(\tR\acontent\x1ah\n" +
 	"\tAudioNote\x12\x1b\n" +
-	"\tmime_type\x18\x01 \x01(\tR\bmimeType\x1a\xbe\x01\n" +
+	"\tmime_type\x18\x01 \x01(\tR\bmimeType\x12\x1d\n" +
+	"\n" +
+	"origin_uri\x18\x02 \x01(\tR\toriginUri\x12\x1f\n" +
+	"\vcontent_uri\x18\x03 \x01(\tR\n" +
+	"contentUri\x1a\xfe\x01\n" +
 	"\x0fMultiFileUpload\x12\x12\n" +
 	"\x04note\x18\x01 \x01(\tR\x04note\x12V\n" +
-	"\x05files\x18\x02 \x03(\v2@.alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.FileR\x05files\x1a?\n" +
+	"\x05files\x18\x02 \x03(\v2@.alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.FileR\x05files\x12\x1d\n" +
+	"\n" +
+	"origin_uri\x18\x03 \x01(\tR\toriginUri\x1a`\n" +
 	"\x04File\x12\x1a\n" +
 	"\bfilename\x18\x01 \x01(\tR\bfilename\x12\x1b\n" +
-	"\tmime_type\x18\x02 \x01(\tR\bmimeTypeB\x0f\n" +
+	"\tmime_type\x18\x02 \x01(\tR\bmimeType\x12\x1f\n" +
+	"\vcontent_uri\x18\x03 \x01(\tR\n" +
+	"contentUriB\x0f\n" +
 	"\rstream_targetB\x12\n" +
 	"\x10feedback_content\"\xb8\x05\n" +
 	"\x1fInitialiseAgentFeedbackResponse\x12:\n" +
