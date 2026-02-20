@@ -1066,7 +1066,7 @@ type GenerateAgentFeedbackSpecRequest struct {
 	// The names of the streams that point to the agent stream under feedback
 	// Format: ideas/*/streams/*
 	//
-	// Will fail if the stream is not an agent stream type.
+	// If NOT specified, will generate feedback for all agent streams in the idea.
 	TargetAgents  []string `protobuf:"bytes,4,rep,name=target_agents,json=targetAgents,proto3" json:"target_agents,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
