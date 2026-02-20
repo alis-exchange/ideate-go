@@ -20,18 +20,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdeateService_AddNote_FullMethodName                 = "/alis.ideate.IdeateService/AddNote"
-	IdeateService_AddAudioNote_FullMethodName            = "/alis.ideate.IdeateService/AddAudioNote"
-	IdeateService_AddMultiFileUpload_FullMethodName      = "/alis.ideate.IdeateService/AddMultiFileUpload"
-	IdeateService_AddAgent_FullMethodName                = "/alis.ideate.IdeateService/AddAgent"
-	IdeateService_InitialiseAgentFeedback_FullMethodName = "/alis.ideate.IdeateService/InitialiseAgentFeedback"
-	IdeateService_GetIdea_FullMethodName                 = "/alis.ideate.IdeateService/GetIdea"
-	IdeateService_GetStream_FullMethodName               = "/alis.ideate.IdeateService/GetStream"
-	IdeateService_GetSpec_FullMethodName                 = "/alis.ideate.IdeateService/GetSpec"
-	IdeateService_RetrieveIdeaSpecs_FullMethodName       = "/alis.ideate.IdeateService/RetrieveIdeaSpecs"
-	IdeateService_GenerateCustomAgentSpec_FullMethodName = "/alis.ideate.IdeateService/GenerateCustomAgentSpec"
-	IdeateService_TestIdeateAccess_FullMethodName        = "/alis.ideate.IdeateService/TestIdeateAccess"
-	IdeateService_GetOperation_FullMethodName            = "/alis.ideate.IdeateService/GetOperation"
+	IdeateService_AddNote_FullMethodName                   = "/alis.ideate.IdeateService/AddNote"
+	IdeateService_AddAudioNote_FullMethodName              = "/alis.ideate.IdeateService/AddAudioNote"
+	IdeateService_AddMultiFileUpload_FullMethodName        = "/alis.ideate.IdeateService/AddMultiFileUpload"
+	IdeateService_AddAgent_FullMethodName                  = "/alis.ideate.IdeateService/AddAgent"
+	IdeateService_InitialiseAgentFeedback_FullMethodName   = "/alis.ideate.IdeateService/InitialiseAgentFeedback"
+	IdeateService_GetIdea_FullMethodName                   = "/alis.ideate.IdeateService/GetIdea"
+	IdeateService_GetStream_FullMethodName                 = "/alis.ideate.IdeateService/GetStream"
+	IdeateService_GetSpec_FullMethodName                   = "/alis.ideate.IdeateService/GetSpec"
+	IdeateService_RetrieveIdeaSpecs_FullMethodName         = "/alis.ideate.IdeateService/RetrieveIdeaSpecs"
+	IdeateService_GenerateCustomAgentSpec_FullMethodName   = "/alis.ideate.IdeateService/GenerateCustomAgentSpec"
+	IdeateService_GenerateAgentFeedbackSpec_FullMethodName = "/alis.ideate.IdeateService/GenerateAgentFeedbackSpec"
+	IdeateService_TestIdeateAccess_FullMethodName          = "/alis.ideate.IdeateService/TestIdeateAccess"
+	IdeateService_GetOperation_FullMethodName              = "/alis.ideate.IdeateService/GetOperation"
 )
 
 // IdeateServiceClient is the client API for IdeateService service.
@@ -70,6 +71,9 @@ type IdeateServiceClient interface {
 	// Generates a Custom Agent spec.
 	// This will generate a new spec from an idea, or regenerate an existing spec.
 	GenerateCustomAgentSpec(ctx context.Context, in *GenerateCustomAgentSpecRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
+	// Generates an Agent Feedback spec.
+	// This will generate a new spec from an idea, or regenerate an existing spec.
+	GenerateAgentFeedbackSpec(ctx context.Context, in *GenerateAgentFeedbackSpecRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
 	// Tests whether the caller has access to Ideate for a specific account
 	TestIdeateAccess(ctx context.Context, in *TestIdeateAccessRequest, opts ...grpc.CallOption) (*TestIdeateAccessResponse, error)
 	// Returns the given lro
@@ -184,6 +188,16 @@ func (c *ideateServiceClient) GenerateCustomAgentSpec(ctx context.Context, in *G
 	return out, nil
 }
 
+func (c *ideateServiceClient) GenerateAgentFeedbackSpec(ctx context.Context, in *GenerateAgentFeedbackSpecRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(longrunning.Operation)
+	err := c.cc.Invoke(ctx, IdeateService_GenerateAgentFeedbackSpec_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *ideateServiceClient) TestIdeateAccess(ctx context.Context, in *TestIdeateAccessRequest, opts ...grpc.CallOption) (*TestIdeateAccessResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TestIdeateAccessResponse)
@@ -240,6 +254,9 @@ type IdeateServiceServer interface {
 	// Generates a Custom Agent spec.
 	// This will generate a new spec from an idea, or regenerate an existing spec.
 	GenerateCustomAgentSpec(context.Context, *GenerateCustomAgentSpecRequest) (*longrunning.Operation, error)
+	// Generates an Agent Feedback spec.
+	// This will generate a new spec from an idea, or regenerate an existing spec.
+	GenerateAgentFeedbackSpec(context.Context, *GenerateAgentFeedbackSpecRequest) (*longrunning.Operation, error)
 	// Tests whether the caller has access to Ideate for a specific account
 	TestIdeateAccess(context.Context, *TestIdeateAccessRequest) (*TestIdeateAccessResponse, error)
 	// Returns the given lro
@@ -283,6 +300,9 @@ func (UnimplementedIdeateServiceServer) RetrieveIdeaSpecs(context.Context, *Retr
 }
 func (UnimplementedIdeateServiceServer) GenerateCustomAgentSpec(context.Context, *GenerateCustomAgentSpecRequest) (*longrunning.Operation, error) {
 	return nil, status.Error(codes.Unimplemented, "method GenerateCustomAgentSpec not implemented")
+}
+func (UnimplementedIdeateServiceServer) GenerateAgentFeedbackSpec(context.Context, *GenerateAgentFeedbackSpecRequest) (*longrunning.Operation, error) {
+	return nil, status.Error(codes.Unimplemented, "method GenerateAgentFeedbackSpec not implemented")
 }
 func (UnimplementedIdeateServiceServer) TestIdeateAccess(context.Context, *TestIdeateAccessRequest) (*TestIdeateAccessResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method TestIdeateAccess not implemented")
@@ -491,6 +511,24 @@ func _IdeateService_GenerateCustomAgentSpec_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdeateService_GenerateAgentFeedbackSpec_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateAgentFeedbackSpecRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdeateServiceServer).GenerateAgentFeedbackSpec(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdeateService_GenerateAgentFeedbackSpec_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdeateServiceServer).GenerateAgentFeedbackSpec(ctx, req.(*GenerateAgentFeedbackSpecRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _IdeateService_TestIdeateAccess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TestIdeateAccessRequest)
 	if err := dec(in); err != nil {
@@ -573,6 +611,10 @@ var IdeateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GenerateCustomAgentSpec",
 			Handler:    _IdeateService_GenerateCustomAgentSpec_Handler,
+		},
+		{
+			MethodName: "GenerateAgentFeedbackSpec",
+			Handler:    _IdeateService_GenerateAgentFeedbackSpec_Handler,
 		},
 		{
 			MethodName: "TestIdeateAccess",

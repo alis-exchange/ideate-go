@@ -3,7 +3,7 @@
 // Source: alis/ideate/ideate.proto
 // Plugin version: v0.0.1
 //
-// Generated on: 2026-02-20 11:49:18 UTC
+// Generated on: 2026-02-20 12:49:37 UTC
 
 package ideate
 
@@ -28,6 +28,8 @@ const (
 	IdeateService_RetrieveIdeaSpecs_FullMethodDescription = "Retrieves the set of Specs associated with a specified Idea.\n If a Spec type is set, only Specs of that type will be returned.\n Otherwise, all generated Specs for the idea will be returned."
 	// IdeateService_GenerateCustomAgentSpec_FullMethodDescription returns the description of the alis.ideate.IdeateService.GenerateCustomAgentSpec method.
 	IdeateService_GenerateCustomAgentSpec_FullMethodDescription = "Generates a Custom Agent spec.\n This will generate a new spec from an idea, or regenerate an existing spec."
+	// IdeateService_GenerateAgentFeedbackSpec_FullMethodDescription returns the description of the alis.ideate.IdeateService.GenerateAgentFeedbackSpec method.
+	IdeateService_GenerateAgentFeedbackSpec_FullMethodDescription = "Generates an Agent Feedback spec.\n This will generate a new spec from an idea, or regenerate an existing spec."
 	// IdeateService_TestIdeateAccess_FullMethodDescription returns the description of the alis.ideate.IdeateService.TestIdeateAccess method.
 	IdeateService_TestIdeateAccess_FullMethodDescription = "Tests whether the caller has access to Ideate for a specific account"
 	// IdeateService_GetOperation_FullMethodDescription returns the description of the alis.ideate.IdeateService.GetOperation method.

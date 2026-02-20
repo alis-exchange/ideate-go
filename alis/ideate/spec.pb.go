@@ -70,8 +70,10 @@ const (
 	Spec_RESEARCH_PLAN Spec_Type = 20
 	// A Custom Agent spec.
 	Spec_CUSTOM_AGENT Spec_Type = 21
-	// A Product Requirements Document spec.
+	// A product requirements document spec.
 	Spec_PRODUCT_REQUIREMENTS_DOCUMENT Spec_Type = 22
+	// An agent feedback spec.
+	Spec_AGENT_FEEDBACK Spec_Type = 23
 )
 
 // Enum value maps for Spec_Type.
@@ -97,6 +99,7 @@ var (
 		20: "RESEARCH_PLAN",
 		21: "CUSTOM_AGENT",
 		22: "PRODUCT_REQUIREMENTS_DOCUMENT",
+		23: "AGENT_FEEDBACK",
 	}
 	Spec_Type_value = map[string]int32{
 		"TYPE_UNSPECIFIED":               0,
@@ -119,6 +122,7 @@ var (
 		"RESEARCH_PLAN":                  20,
 		"CUSTOM_AGENT":                   21,
 		"PRODUCT_REQUIREMENTS_DOCUMENT":  22,
+		"AGENT_FEEDBACK":                 23,
 	}
 )
 
@@ -266,6 +270,7 @@ type Spec struct {
 	//	*Spec_ResearchPlan_
 	//	*Spec_CustomAgent_
 	//	*Spec_ProductRequirementsDocument_
+	//	*Spec_AgentFeedback_
 	Output isSpec_Output `protobuf_oneof:"output"`
 	// Context used to generate this Spec.
 	GenerationContext *Spec_GenerationContext `protobuf:"bytes,95,opt,name=generation_context,json=generationContext,proto3" json:"generation_context,omitempty"`
@@ -516,6 +521,15 @@ func (x *Spec) GetProductRequirementsDocument() *Spec_ProductRequirementsDocumen
 	return nil
 }
 
+func (x *Spec) GetAgentFeedback() *Spec_AgentFeedback {
+	if x != nil {
+		if x, ok := x.Output.(*Spec_AgentFeedback_); ok {
+			return x.AgentFeedback
+		}
+	}
+	return nil
+}
+
 func (x *Spec) GetGenerationContext() *Spec_GenerationContext {
 	if x != nil {
 		return x.GenerationContext
@@ -645,6 +659,11 @@ type Spec_ProductRequirementsDocument_ struct {
 	ProductRequirementsDocument *Spec_ProductRequirementsDocument `protobuf:"bytes,23,opt,name=product_requirements_document,json=productRequirementsDocument,proto3,oneof"`
 }
 
+type Spec_AgentFeedback_ struct {
+	// An agent feedback.
+	AgentFeedback *Spec_AgentFeedback `protobuf:"bytes,24,opt,name=agent_feedback,json=agentFeedback,proto3,oneof"`
+}
+
 func (*Spec_FullRfp_) isSpec_Output() {}
 
 func (*Spec_IdeaBrief_) isSpec_Output() {}
@@ -680,6 +699,8 @@ func (*Spec_ResearchPlan_) isSpec_Output() {}
 func (*Spec_CustomAgent_) isSpec_Output() {}
 
 func (*Spec_ProductRequirementsDocument_) isSpec_Output() {}
+
+func (*Spec_AgentFeedback_) isSpec_Output() {}
 
 // Request to get an spec.
 type GetSpecRequest struct {
@@ -1030,6 +1051,209 @@ func (x *RetrieveIdeaSpecsResponse) GetSpecs() []*Spec {
 	return nil
 }
 
+// Request to generate an Agent Feedback spec.
+type GenerateAgentFeedbackSpecRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The source for generating the spec.
+	//
+	// Types that are valid to be assigned to Source:
+	//
+	//	*GenerateAgentFeedbackSpecRequest_Idea
+	//	*GenerateAgentFeedbackSpecRequest_Spec
+	Source isGenerateAgentFeedbackSpecRequest_Source `protobuf_oneof:"source"`
+	// Context used to generate this Spec.
+	GenerationContext *Spec_GenerationContext `protobuf:"bytes,3,opt,name=generation_context,json=generationContext,proto3" json:"generation_context,omitempty"`
+	// The names of the streams that point to the agent stream under feedback
+	// Format: ideas/*/streams/*
+	//
+	// Will fail if the stream is not an agent stream type.
+	TargetAgents  []string `protobuf:"bytes,4,rep,name=target_agents,json=targetAgents,proto3" json:"target_agents,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) Reset() {
+	*x = GenerateAgentFeedbackSpecRequest{}
+	mi := &file_alis_ideate_spec_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateAgentFeedbackSpecRequest) ProtoMessage() {}
+
+func (x *GenerateAgentFeedbackSpecRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_spec_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateAgentFeedbackSpecRequest.ProtoReflect.Descriptor instead.
+func (*GenerateAgentFeedbackSpecRequest) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) GetSource() isGenerateAgentFeedbackSpecRequest_Source {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) GetIdea() string {
+	if x != nil {
+		if x, ok := x.Source.(*GenerateAgentFeedbackSpecRequest_Idea); ok {
+			return x.Idea
+		}
+	}
+	return ""
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) GetSpec() string {
+	if x != nil {
+		if x, ok := x.Source.(*GenerateAgentFeedbackSpecRequest_Spec); ok {
+			return x.Spec
+		}
+	}
+	return ""
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) GetGenerationContext() *Spec_GenerationContext {
+	if x != nil {
+		return x.GenerationContext
+	}
+	return nil
+}
+
+func (x *GenerateAgentFeedbackSpecRequest) GetTargetAgents() []string {
+	if x != nil {
+		return x.TargetAgents
+	}
+	return nil
+}
+
+type isGenerateAgentFeedbackSpecRequest_Source interface {
+	isGenerateAgentFeedbackSpecRequest_Source()
+}
+
+type GenerateAgentFeedbackSpecRequest_Idea struct {
+	// The idea to generate the spec from.
+	// Format: ideas/{idea_id}
+	Idea string `protobuf:"bytes,1,opt,name=idea,proto3,oneof"`
+}
+
+type GenerateAgentFeedbackSpecRequest_Spec struct {
+	// The existing spec to regenerate.
+	// Format: specs/{spec_id}
+	Spec string `protobuf:"bytes,2,opt,name=spec,proto3,oneof"`
+}
+
+func (*GenerateAgentFeedbackSpecRequest_Idea) isGenerateAgentFeedbackSpecRequest_Source() {}
+
+func (*GenerateAgentFeedbackSpecRequest_Spec) isGenerateAgentFeedbackSpecRequest_Source() {}
+
+// Data required for long running portion of the GenerateAgentFeedbackSpec RPC method
+// to continue running
+type GenerateAgentFeedbackSpecMetadata struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The request message for the GenerateAgentFeedbackSpec rpc
+	GenerateAgentFeedbackSpecRequest *GenerateAgentFeedbackSpecRequest `protobuf:"bytes,1,opt,name=generate_agent_feedback_spec_request,json=generateAgentFeedbackSpecRequest,proto3" json:"generate_agent_feedback_spec_request,omitempty"`
+	unknownFields                    protoimpl.UnknownFields
+	sizeCache                        protoimpl.SizeCache
+}
+
+func (x *GenerateAgentFeedbackSpecMetadata) Reset() {
+	*x = GenerateAgentFeedbackSpecMetadata{}
+	mi := &file_alis_ideate_spec_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateAgentFeedbackSpecMetadata) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateAgentFeedbackSpecMetadata) ProtoMessage() {}
+
+func (x *GenerateAgentFeedbackSpecMetadata) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_spec_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateAgentFeedbackSpecMetadata.ProtoReflect.Descriptor instead.
+func (*GenerateAgentFeedbackSpecMetadata) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GenerateAgentFeedbackSpecMetadata) GetGenerateAgentFeedbackSpecRequest() *GenerateAgentFeedbackSpecRequest {
+	if x != nil {
+		return x.GenerateAgentFeedbackSpecRequest
+	}
+	return nil
+}
+
+// Response for generating an Agent Feedback spec.
+type GenerateAgentFeedbackSpecResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The generated Spec
+	Spec          *Spec `protobuf:"bytes,1,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateAgentFeedbackSpecResponse) Reset() {
+	*x = GenerateAgentFeedbackSpecResponse{}
+	mi := &file_alis_ideate_spec_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateAgentFeedbackSpecResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateAgentFeedbackSpecResponse) ProtoMessage() {}
+
+func (x *GenerateAgentFeedbackSpecResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_spec_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateAgentFeedbackSpecResponse.ProtoReflect.Descriptor instead.
+func (*GenerateAgentFeedbackSpecResponse) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GenerateAgentFeedbackSpecResponse) GetSpec() *Spec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
 // A full Request for Proposal (RFP).
 type Spec_FullRfp struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1041,7 +1265,7 @@ type Spec_FullRfp struct {
 
 func (x *Spec_FullRfp) Reset() {
 	*x = Spec_FullRfp{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[7]
+	mi := &file_alis_ideate_spec_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1053,7 +1277,7 @@ func (x *Spec_FullRfp) String() string {
 func (*Spec_FullRfp) ProtoMessage() {}
 
 func (x *Spec_FullRfp) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[7]
+	mi := &file_alis_ideate_spec_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1087,7 +1311,7 @@ type Spec_IdeaBrief struct {
 
 func (x *Spec_IdeaBrief) Reset() {
 	*x = Spec_IdeaBrief{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[8]
+	mi := &file_alis_ideate_spec_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1099,7 +1323,7 @@ func (x *Spec_IdeaBrief) String() string {
 func (*Spec_IdeaBrief) ProtoMessage() {}
 
 func (x *Spec_IdeaBrief) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[8]
+	mi := &file_alis_ideate_spec_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1133,7 +1357,7 @@ type Spec_UiDesign struct {
 
 func (x *Spec_UiDesign) Reset() {
 	*x = Spec_UiDesign{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[9]
+	mi := &file_alis_ideate_spec_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1145,7 +1369,7 @@ func (x *Spec_UiDesign) String() string {
 func (*Spec_UiDesign) ProtoMessage() {}
 
 func (x *Spec_UiDesign) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[9]
+	mi := &file_alis_ideate_spec_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1179,7 +1403,7 @@ type Spec_AiPrototype struct {
 
 func (x *Spec_AiPrototype) Reset() {
 	*x = Spec_AiPrototype{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[10]
+	mi := &file_alis_ideate_spec_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1191,7 +1415,7 @@ func (x *Spec_AiPrototype) String() string {
 func (*Spec_AiPrototype) ProtoMessage() {}
 
 func (x *Spec_AiPrototype) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[10]
+	mi := &file_alis_ideate_spec_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1225,7 +1449,7 @@ type Spec_IdeateSpec struct {
 
 func (x *Spec_IdeateSpec) Reset() {
 	*x = Spec_IdeateSpec{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[11]
+	mi := &file_alis_ideate_spec_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1237,7 +1461,7 @@ func (x *Spec_IdeateSpec) String() string {
 func (*Spec_IdeateSpec) ProtoMessage() {}
 
 func (x *Spec_IdeateSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[11]
+	mi := &file_alis_ideate_spec_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1271,7 +1495,7 @@ type Spec_BusinessCase struct {
 
 func (x *Spec_BusinessCase) Reset() {
 	*x = Spec_BusinessCase{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[12]
+	mi := &file_alis_ideate_spec_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1283,7 +1507,7 @@ func (x *Spec_BusinessCase) String() string {
 func (*Spec_BusinessCase) ProtoMessage() {}
 
 func (x *Spec_BusinessCase) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[12]
+	mi := &file_alis_ideate_spec_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1317,7 +1541,7 @@ type Spec_SolutionFlowSpec struct {
 
 func (x *Spec_SolutionFlowSpec) Reset() {
 	*x = Spec_SolutionFlowSpec{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[13]
+	mi := &file_alis_ideate_spec_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1329,7 +1553,7 @@ func (x *Spec_SolutionFlowSpec) String() string {
 func (*Spec_SolutionFlowSpec) ProtoMessage() {}
 
 func (x *Spec_SolutionFlowSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[13]
+	mi := &file_alis_ideate_spec_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1363,7 +1587,7 @@ type Spec_CraftedSpec struct {
 
 func (x *Spec_CraftedSpec) Reset() {
 	*x = Spec_CraftedSpec{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[14]
+	mi := &file_alis_ideate_spec_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1375,7 +1599,7 @@ func (x *Spec_CraftedSpec) String() string {
 func (*Spec_CraftedSpec) ProtoMessage() {}
 
 func (x *Spec_CraftedSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[14]
+	mi := &file_alis_ideate_spec_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1409,7 +1633,7 @@ type Spec_CurrentProcess struct {
 
 func (x *Spec_CurrentProcess) Reset() {
 	*x = Spec_CurrentProcess{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[15]
+	mi := &file_alis_ideate_spec_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1421,7 +1645,7 @@ func (x *Spec_CurrentProcess) String() string {
 func (*Spec_CurrentProcess) ProtoMessage() {}
 
 func (x *Spec_CurrentProcess) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[15]
+	mi := &file_alis_ideate_spec_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1455,7 +1679,7 @@ type Spec_Jargon struct {
 
 func (x *Spec_Jargon) Reset() {
 	*x = Spec_Jargon{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[16]
+	mi := &file_alis_ideate_spec_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1467,7 +1691,7 @@ func (x *Spec_Jargon) String() string {
 func (*Spec_Jargon) ProtoMessage() {}
 
 func (x *Spec_Jargon) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[16]
+	mi := &file_alis_ideate_spec_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1501,7 +1725,7 @@ type Spec_TechnologyLandscape struct {
 
 func (x *Spec_TechnologyLandscape) Reset() {
 	*x = Spec_TechnologyLandscape{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[17]
+	mi := &file_alis_ideate_spec_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1513,7 +1737,7 @@ func (x *Spec_TechnologyLandscape) String() string {
 func (*Spec_TechnologyLandscape) ProtoMessage() {}
 
 func (x *Spec_TechnologyLandscape) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[17]
+	mi := &file_alis_ideate_spec_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1547,7 +1771,7 @@ type Spec_PainPoints struct {
 
 func (x *Spec_PainPoints) Reset() {
 	*x = Spec_PainPoints{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[18]
+	mi := &file_alis_ideate_spec_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1559,7 +1783,7 @@ func (x *Spec_PainPoints) String() string {
 func (*Spec_PainPoints) ProtoMessage() {}
 
 func (x *Spec_PainPoints) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[18]
+	mi := &file_alis_ideate_spec_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1593,7 +1817,7 @@ type Spec_StakeholderMap struct {
 
 func (x *Spec_StakeholderMap) Reset() {
 	*x = Spec_StakeholderMap{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[19]
+	mi := &file_alis_ideate_spec_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1605,7 +1829,7 @@ func (x *Spec_StakeholderMap) String() string {
 func (*Spec_StakeholderMap) ProtoMessage() {}
 
 func (x *Spec_StakeholderMap) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[19]
+	mi := &file_alis_ideate_spec_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1642,7 +1866,7 @@ type Spec_FigmaMake struct {
 
 func (x *Spec_FigmaMake) Reset() {
 	*x = Spec_FigmaMake{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[20]
+	mi := &file_alis_ideate_spec_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1654,7 +1878,7 @@ func (x *Spec_FigmaMake) String() string {
 func (*Spec_FigmaMake) ProtoMessage() {}
 
 func (x *Spec_FigmaMake) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[20]
+	mi := &file_alis_ideate_spec_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1692,7 +1916,7 @@ type Spec_GeminiEnterpriseCustomAgentSpec struct {
 
 func (x *Spec_GeminiEnterpriseCustomAgentSpec) Reset() {
 	*x = Spec_GeminiEnterpriseCustomAgentSpec{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[21]
+	mi := &file_alis_ideate_spec_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1704,7 +1928,7 @@ func (x *Spec_GeminiEnterpriseCustomAgentSpec) String() string {
 func (*Spec_GeminiEnterpriseCustomAgentSpec) ProtoMessage() {}
 
 func (x *Spec_GeminiEnterpriseCustomAgentSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[21]
+	mi := &file_alis_ideate_spec_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1762,7 +1986,7 @@ type Spec_AiStudio struct {
 
 func (x *Spec_AiStudio) Reset() {
 	*x = Spec_AiStudio{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[22]
+	mi := &file_alis_ideate_spec_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1774,7 +1998,7 @@ func (x *Spec_AiStudio) String() string {
 func (*Spec_AiStudio) ProtoMessage() {}
 
 func (x *Spec_AiStudio) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[22]
+	mi := &file_alis_ideate_spec_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1831,7 +2055,7 @@ type Spec_ResearchPlan struct {
 
 func (x *Spec_ResearchPlan) Reset() {
 	*x = Spec_ResearchPlan{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[23]
+	mi := &file_alis_ideate_spec_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1843,7 +2067,7 @@ func (x *Spec_ResearchPlan) String() string {
 func (*Spec_ResearchPlan) ProtoMessage() {}
 
 func (x *Spec_ResearchPlan) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[23]
+	mi := &file_alis_ideate_spec_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1891,7 +2115,7 @@ type Spec_CustomAgent struct {
 
 func (x *Spec_CustomAgent) Reset() {
 	*x = Spec_CustomAgent{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[24]
+	mi := &file_alis_ideate_spec_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1903,7 +2127,7 @@ func (x *Spec_CustomAgent) String() string {
 func (*Spec_CustomAgent) ProtoMessage() {}
 
 func (x *Spec_CustomAgent) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[24]
+	mi := &file_alis_ideate_spec_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1937,7 +2161,7 @@ type Spec_ProductRequirementsDocument struct {
 
 func (x *Spec_ProductRequirementsDocument) Reset() {
 	*x = Spec_ProductRequirementsDocument{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[25]
+	mi := &file_alis_ideate_spec_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1949,7 +2173,7 @@ func (x *Spec_ProductRequirementsDocument) String() string {
 func (*Spec_ProductRequirementsDocument) ProtoMessage() {}
 
 func (x *Spec_ProductRequirementsDocument) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[25]
+	mi := &file_alis_ideate_spec_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1966,6 +2190,61 @@ func (*Spec_ProductRequirementsDocument) Descriptor() ([]byte, []int) {
 }
 
 func (x *Spec_ProductRequirementsDocument) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+// An agent feedback spec.
+type Spec_AgentFeedback struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The agent cards associated with the feedback.
+	TargetAgents []*Spec_AgentFeedback_TargetAgent `protobuf:"bytes,1,rep,name=target_agents,json=targetAgents,proto3" json:"target_agents,omitempty"`
+	// The markdown content of the agent feedback.
+	Content       string `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Spec_AgentFeedback) Reset() {
+	*x = Spec_AgentFeedback{}
+	mi := &file_alis_ideate_spec_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Spec_AgentFeedback) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Spec_AgentFeedback) ProtoMessage() {}
+
+func (x *Spec_AgentFeedback) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_spec_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Spec_AgentFeedback.ProtoReflect.Descriptor instead.
+func (*Spec_AgentFeedback) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{0, 19}
+}
+
+func (x *Spec_AgentFeedback) GetTargetAgents() []*Spec_AgentFeedback_TargetAgent {
+	if x != nil {
+		return x.TargetAgents
+	}
+	return nil
+}
+
+func (x *Spec_AgentFeedback) GetContent() string {
 	if x != nil {
 		return x.Content
 	}
@@ -1996,7 +2275,7 @@ type Spec_GenerationContext struct {
 
 func (x *Spec_GenerationContext) Reset() {
 	*x = Spec_GenerationContext{}
-	mi := &file_alis_ideate_spec_proto_msgTypes[26]
+	mi := &file_alis_ideate_spec_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2008,7 +2287,7 @@ func (x *Spec_GenerationContext) String() string {
 func (*Spec_GenerationContext) ProtoMessage() {}
 
 func (x *Spec_GenerationContext) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_spec_proto_msgTypes[26]
+	mi := &file_alis_ideate_spec_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2021,7 +2300,7 @@ func (x *Spec_GenerationContext) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Spec_GenerationContext.ProtoReflect.Descriptor instead.
 func (*Spec_GenerationContext) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{0, 19}
+	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{0, 20}
 }
 
 func (x *Spec_GenerationContext) GetFilter() string {
@@ -2038,11 +2317,76 @@ func (x *Spec_GenerationContext) GetInstructions() string {
 	return ""
 }
 
+// Definition of TargetAgent
+type Spec_AgentFeedback_TargetAgent struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The name of Agent Stream
+	// Format: ideas/*/streams/*
+	AgentStream string `protobuf:"bytes,1,opt,name=agent_stream,json=agentStream,proto3" json:"agent_stream,omitempty"`
+	// The agent card of the target agent
+	AgentCard *AgentCard `protobuf:"bytes,2,opt,name=agent_card,json=agentCard,proto3" json:"agent_card,omitempty"`
+	// A high-level overview of the Agent based on the Agent Card description
+	Overview      string `protobuf:"bytes,3,opt,name=overview,proto3" json:"overview,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Spec_AgentFeedback_TargetAgent) Reset() {
+	*x = Spec_AgentFeedback_TargetAgent{}
+	mi := &file_alis_ideate_spec_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Spec_AgentFeedback_TargetAgent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Spec_AgentFeedback_TargetAgent) ProtoMessage() {}
+
+func (x *Spec_AgentFeedback_TargetAgent) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_spec_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Spec_AgentFeedback_TargetAgent.ProtoReflect.Descriptor instead.
+func (*Spec_AgentFeedback_TargetAgent) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_spec_proto_rawDescGZIP(), []int{0, 19, 0}
+}
+
+func (x *Spec_AgentFeedback_TargetAgent) GetAgentStream() string {
+	if x != nil {
+		return x.AgentStream
+	}
+	return ""
+}
+
+func (x *Spec_AgentFeedback_TargetAgent) GetAgentCard() *AgentCard {
+	if x != nil {
+		return x.AgentCard
+	}
+	return nil
+}
+
+func (x *Spec_AgentFeedback_TargetAgent) GetOverview() string {
+	if x != nil {
+		return x.Overview
+	}
+	return ""
+}
+
 var File_alis_ideate_spec_proto protoreflect.FileDescriptor
 
 const file_alis_ideate_spec_proto_rawDesc = "" +
 	"\n" +
-	"\x16alis/ideate/spec.proto\x12\valis.ideate\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\"\xad\x1b\n" +
+	"\x16alis/ideate/spec.proto\x12\valis.ideate\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x1calis/ideate/agent_card.proto\"\x8f\x1e\n" +
 	"\x04Spec\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12*\n" +
@@ -2071,7 +2415,8 @@ const file_alis_ideate_spec_proto_rawDesc = "" +
 	"\x12solution_flow_spec\x18\x14 \x01(\v2\".alis.ideate.Spec.SolutionFlowSpecH\x00R\x10solutionFlowSpec\x12E\n" +
 	"\rresearch_plan\x18\x15 \x01(\v2\x1e.alis.ideate.Spec.ResearchPlanH\x00R\fresearchPlan\x12B\n" +
 	"\fcustom_agent\x18\x16 \x01(\v2\x1d.alis.ideate.Spec.CustomAgentH\x00R\vcustomAgent\x12s\n" +
-	"\x1dproduct_requirements_document\x18\x17 \x01(\v2-.alis.ideate.Spec.ProductRequirementsDocumentH\x00R\x1bproductRequirementsDocument\x12R\n" +
+	"\x1dproduct_requirements_document\x18\x17 \x01(\v2-.alis.ideate.Spec.ProductRequirementsDocumentH\x00R\x1bproductRequirementsDocument\x12H\n" +
+	"\x0eagent_feedback\x18\x18 \x01(\v2\x1f.alis.ideate.Spec.AgentFeedbackH\x00R\ragentFeedback\x12R\n" +
 	"\x12generation_context\x18_ \x01(\v2#.alis.ideate.Spec.GenerationContextR\x11generationContext\x12\x1c\n" +
 	"\toperation\x18` \x01(\tR\toperation\x12;\n" +
 	"\vcreate_time\x18b \x01(\v2\x1a.google.protobuf.TimestampR\n" +
@@ -2125,10 +2470,18 @@ const file_alis_ideate_spec_proto_rawDesc = "" +
 	"\vCustomAgent\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\tR\acontent\x1a7\n" +
 	"\x1bProductRequirementsDocument\x12\x18\n" +
-	"\acontent\x18\x01 \x01(\tR\acontent\x1aO\n" +
+	"\acontent\x18\x01 \x01(\tR\acontent\x1a\x81\x02\n" +
+	"\rAgentFeedback\x12P\n" +
+	"\rtarget_agents\x18\x01 \x03(\v2+.alis.ideate.Spec.AgentFeedback.TargetAgentR\ftargetAgents\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\x1a\x83\x01\n" +
+	"\vTargetAgent\x12!\n" +
+	"\fagent_stream\x18\x01 \x01(\tR\vagentStream\x125\n" +
+	"\n" +
+	"agent_card\x18\x02 \x01(\v2\x16.alis.ideate.AgentCardR\tagentCard\x12\x1a\n" +
+	"\boverview\x18\x03 \x01(\tR\boverview\x1aO\n" +
 	"\x11GenerationContext\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\"\n" +
-	"\finstructions\x18\x02 \x01(\tR\finstructions\"\xa7\x03\n" +
+	"\finstructions\x18\x02 \x01(\tR\finstructions\"\xbb\x03\n" +
 	"\x04Type\x12\x14\n" +
 	"\x10TYPE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bFULL_RFP\x10\x01\x12\x0e\n" +
@@ -2153,7 +2506,8 @@ const file_alis_ideate_spec_proto_rawDesc = "" +
 	"\tAI_STUDIO\x10\x13\x12\x11\n" +
 	"\rRESEARCH_PLAN\x10\x14\x12\x10\n" +
 	"\fCUSTOM_AGENT\x10\x15\x12!\n" +
-	"\x1dPRODUCT_REQUIREMENTS_DOCUMENT\x10\x16\"\x04\b\x02\x10\x02\"\x04\b\x03\x10\x03\"\x04\b\x04\x10\x04\"x\n" +
+	"\x1dPRODUCT_REQUIREMENTS_DOCUMENT\x10\x16\x12\x12\n" +
+	"\x0eAGENT_FEEDBACK\x10\x17\"\x04\b\x02\x10\x02\"\x04\b\x03\x10\x03\"\x04\b\x04\x10\x04\"x\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05DRAFT\x10\x01\x12\r\n" +
@@ -2182,7 +2536,17 @@ const file_alis_ideate_spec_proto_rawDesc = "" +
 	"\x04idea\x18\x01 \x01(\tR\x04idea\x123\n" +
 	"\tspec_type\x18\x02 \x01(\x0e2\x16.alis.ideate.Spec.TypeR\bspecType\"D\n" +
 	"\x19RetrieveIdeaSpecsResponse\x12'\n" +
-	"\x05specs\x18\x01 \x03(\v2\x11.alis.ideate.SpecR\x05specsB0Z.github.com/alis-exchange/ideate-go/alis/ideateb\x06proto3"
+	"\x05specs\x18\x01 \x03(\v2\x11.alis.ideate.SpecR\x05specs\"\xd1\x01\n" +
+	" GenerateAgentFeedbackSpecRequest\x12\x14\n" +
+	"\x04idea\x18\x01 \x01(\tH\x00R\x04idea\x12\x14\n" +
+	"\x04spec\x18\x02 \x01(\tH\x00R\x04spec\x12R\n" +
+	"\x12generation_context\x18\x03 \x01(\v2#.alis.ideate.Spec.GenerationContextR\x11generationContext\x12#\n" +
+	"\rtarget_agents\x18\x04 \x03(\tR\ftargetAgentsB\b\n" +
+	"\x06source\"\xa2\x01\n" +
+	"!GenerateAgentFeedbackSpecMetadata\x12}\n" +
+	"$generate_agent_feedback_spec_request\x18\x01 \x01(\v2-.alis.ideate.GenerateAgentFeedbackSpecRequestR generateAgentFeedbackSpecRequest\"J\n" +
+	"!GenerateAgentFeedbackSpecResponse\x12%\n" +
+	"\x04spec\x18\x01 \x01(\v2\x11.alis.ideate.SpecR\x04specB0Z.github.com/alis-exchange/ideate-go/alis/ideateb\x06proto3"
 
 var (
 	file_alis_ideate_spec_proto_rawDescOnce sync.Once
@@ -2197,7 +2561,7 @@ func file_alis_ideate_spec_proto_rawDescGZIP() []byte {
 }
 
 var file_alis_ideate_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_alis_ideate_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_alis_ideate_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_alis_ideate_spec_proto_goTypes = []any{
 	(Spec_Type)(0),                               // 0: alis.ideate.Spec.Type
 	(Spec_State)(0),                              // 1: alis.ideate.Spec.State
@@ -2208,65 +2572,77 @@ var file_alis_ideate_spec_proto_goTypes = []any{
 	(*GenerateCustomAgentSpecResponse)(nil),      // 6: alis.ideate.GenerateCustomAgentSpecResponse
 	(*RetrieveIdeaSpecsRequest)(nil),             // 7: alis.ideate.RetrieveIdeaSpecsRequest
 	(*RetrieveIdeaSpecsResponse)(nil),            // 8: alis.ideate.RetrieveIdeaSpecsResponse
-	(*Spec_FullRfp)(nil),                         // 9: alis.ideate.Spec.FullRfp
-	(*Spec_IdeaBrief)(nil),                       // 10: alis.ideate.Spec.IdeaBrief
-	(*Spec_UiDesign)(nil),                        // 11: alis.ideate.Spec.UiDesign
-	(*Spec_AiPrototype)(nil),                     // 12: alis.ideate.Spec.AiPrototype
-	(*Spec_IdeateSpec)(nil),                      // 13: alis.ideate.Spec.IdeateSpec
-	(*Spec_BusinessCase)(nil),                    // 14: alis.ideate.Spec.BusinessCase
-	(*Spec_SolutionFlowSpec)(nil),                // 15: alis.ideate.Spec.SolutionFlowSpec
-	(*Spec_CraftedSpec)(nil),                     // 16: alis.ideate.Spec.CraftedSpec
-	(*Spec_CurrentProcess)(nil),                  // 17: alis.ideate.Spec.CurrentProcess
-	(*Spec_Jargon)(nil),                          // 18: alis.ideate.Spec.Jargon
-	(*Spec_TechnologyLandscape)(nil),             // 19: alis.ideate.Spec.TechnologyLandscape
-	(*Spec_PainPoints)(nil),                      // 20: alis.ideate.Spec.PainPoints
-	(*Spec_StakeholderMap)(nil),                  // 21: alis.ideate.Spec.StakeholderMap
-	(*Spec_FigmaMake)(nil),                       // 22: alis.ideate.Spec.FigmaMake
-	(*Spec_GeminiEnterpriseCustomAgentSpec)(nil), // 23: alis.ideate.Spec.GeminiEnterpriseCustomAgentSpec
-	(*Spec_AiStudio)(nil),                        // 24: alis.ideate.Spec.AiStudio
-	(*Spec_ResearchPlan)(nil),                    // 25: alis.ideate.Spec.ResearchPlan
-	(*Spec_CustomAgent)(nil),                     // 26: alis.ideate.Spec.CustomAgent
-	(*Spec_ProductRequirementsDocument)(nil),     // 27: alis.ideate.Spec.ProductRequirementsDocument
-	(*Spec_GenerationContext)(nil),               // 28: alis.ideate.Spec.GenerationContext
-	(*timestamppb.Timestamp)(nil),                // 29: google.protobuf.Timestamp
-	(*fieldmaskpb.FieldMask)(nil),                // 30: google.protobuf.FieldMask
+	(*GenerateAgentFeedbackSpecRequest)(nil),     // 9: alis.ideate.GenerateAgentFeedbackSpecRequest
+	(*GenerateAgentFeedbackSpecMetadata)(nil),    // 10: alis.ideate.GenerateAgentFeedbackSpecMetadata
+	(*GenerateAgentFeedbackSpecResponse)(nil),    // 11: alis.ideate.GenerateAgentFeedbackSpecResponse
+	(*Spec_FullRfp)(nil),                         // 12: alis.ideate.Spec.FullRfp
+	(*Spec_IdeaBrief)(nil),                       // 13: alis.ideate.Spec.IdeaBrief
+	(*Spec_UiDesign)(nil),                        // 14: alis.ideate.Spec.UiDesign
+	(*Spec_AiPrototype)(nil),                     // 15: alis.ideate.Spec.AiPrototype
+	(*Spec_IdeateSpec)(nil),                      // 16: alis.ideate.Spec.IdeateSpec
+	(*Spec_BusinessCase)(nil),                    // 17: alis.ideate.Spec.BusinessCase
+	(*Spec_SolutionFlowSpec)(nil),                // 18: alis.ideate.Spec.SolutionFlowSpec
+	(*Spec_CraftedSpec)(nil),                     // 19: alis.ideate.Spec.CraftedSpec
+	(*Spec_CurrentProcess)(nil),                  // 20: alis.ideate.Spec.CurrentProcess
+	(*Spec_Jargon)(nil),                          // 21: alis.ideate.Spec.Jargon
+	(*Spec_TechnologyLandscape)(nil),             // 22: alis.ideate.Spec.TechnologyLandscape
+	(*Spec_PainPoints)(nil),                      // 23: alis.ideate.Spec.PainPoints
+	(*Spec_StakeholderMap)(nil),                  // 24: alis.ideate.Spec.StakeholderMap
+	(*Spec_FigmaMake)(nil),                       // 25: alis.ideate.Spec.FigmaMake
+	(*Spec_GeminiEnterpriseCustomAgentSpec)(nil), // 26: alis.ideate.Spec.GeminiEnterpriseCustomAgentSpec
+	(*Spec_AiStudio)(nil),                        // 27: alis.ideate.Spec.AiStudio
+	(*Spec_ResearchPlan)(nil),                    // 28: alis.ideate.Spec.ResearchPlan
+	(*Spec_CustomAgent)(nil),                     // 29: alis.ideate.Spec.CustomAgent
+	(*Spec_ProductRequirementsDocument)(nil),     // 30: alis.ideate.Spec.ProductRequirementsDocument
+	(*Spec_AgentFeedback)(nil),                   // 31: alis.ideate.Spec.AgentFeedback
+	(*Spec_GenerationContext)(nil),               // 32: alis.ideate.Spec.GenerationContext
+	(*Spec_AgentFeedback_TargetAgent)(nil),       // 33: alis.ideate.Spec.AgentFeedback.TargetAgent
+	(*timestamppb.Timestamp)(nil),                // 34: google.protobuf.Timestamp
+	(*fieldmaskpb.FieldMask)(nil),                // 35: google.protobuf.FieldMask
+	(*AgentCard)(nil),                            // 36: alis.ideate.AgentCard
 }
 var file_alis_ideate_spec_proto_depIdxs = []int32{
 	0,  // 0: alis.ideate.Spec.type:type_name -> alis.ideate.Spec.Type
 	1,  // 1: alis.ideate.Spec.state:type_name -> alis.ideate.Spec.State
-	9,  // 2: alis.ideate.Spec.full_rfp:type_name -> alis.ideate.Spec.FullRfp
-	10, // 3: alis.ideate.Spec.idea_brief:type_name -> alis.ideate.Spec.IdeaBrief
-	11, // 4: alis.ideate.Spec.ui_design:type_name -> alis.ideate.Spec.UiDesign
-	12, // 5: alis.ideate.Spec.ai_prototype:type_name -> alis.ideate.Spec.AiPrototype
-	13, // 6: alis.ideate.Spec.ideate_spec:type_name -> alis.ideate.Spec.IdeateSpec
-	14, // 7: alis.ideate.Spec.business_case:type_name -> alis.ideate.Spec.BusinessCase
-	17, // 8: alis.ideate.Spec.current_process:type_name -> alis.ideate.Spec.CurrentProcess
-	18, // 9: alis.ideate.Spec.jargon:type_name -> alis.ideate.Spec.Jargon
-	19, // 10: alis.ideate.Spec.technology_landscape:type_name -> alis.ideate.Spec.TechnologyLandscape
-	20, // 11: alis.ideate.Spec.pain_points:type_name -> alis.ideate.Spec.PainPoints
-	21, // 12: alis.ideate.Spec.stakeholder_map:type_name -> alis.ideate.Spec.StakeholderMap
-	22, // 13: alis.ideate.Spec.figma_make:type_name -> alis.ideate.Spec.FigmaMake
-	23, // 14: alis.ideate.Spec.gemini_enterprise_custom_agent:type_name -> alis.ideate.Spec.GeminiEnterpriseCustomAgentSpec
-	24, // 15: alis.ideate.Spec.ai_studio:type_name -> alis.ideate.Spec.AiStudio
-	15, // 16: alis.ideate.Spec.solution_flow_spec:type_name -> alis.ideate.Spec.SolutionFlowSpec
-	25, // 17: alis.ideate.Spec.research_plan:type_name -> alis.ideate.Spec.ResearchPlan
-	26, // 18: alis.ideate.Spec.custom_agent:type_name -> alis.ideate.Spec.CustomAgent
-	27, // 19: alis.ideate.Spec.product_requirements_document:type_name -> alis.ideate.Spec.ProductRequirementsDocument
-	28, // 20: alis.ideate.Spec.generation_context:type_name -> alis.ideate.Spec.GenerationContext
-	29, // 21: alis.ideate.Spec.create_time:type_name -> google.protobuf.Timestamp
-	29, // 22: alis.ideate.Spec.update_time:type_name -> google.protobuf.Timestamp
-	29, // 23: alis.ideate.Spec.delete_time:type_name -> google.protobuf.Timestamp
-	30, // 24: alis.ideate.GetSpecRequest.read_mask:type_name -> google.protobuf.FieldMask
-	28, // 25: alis.ideate.GenerateCustomAgentSpecRequest.generation_context:type_name -> alis.ideate.Spec.GenerationContext
-	4,  // 26: alis.ideate.GenerateCustomAgentSpecMetadata.generate_custom_agent_spec_request:type_name -> alis.ideate.GenerateCustomAgentSpecRequest
-	2,  // 27: alis.ideate.GenerateCustomAgentSpecResponse.spec:type_name -> alis.ideate.Spec
-	0,  // 28: alis.ideate.RetrieveIdeaSpecsRequest.spec_type:type_name -> alis.ideate.Spec.Type
-	2,  // 29: alis.ideate.RetrieveIdeaSpecsResponse.specs:type_name -> alis.ideate.Spec
-	30, // [30:30] is the sub-list for method output_type
-	30, // [30:30] is the sub-list for method input_type
-	30, // [30:30] is the sub-list for extension type_name
-	30, // [30:30] is the sub-list for extension extendee
-	0,  // [0:30] is the sub-list for field type_name
+	12, // 2: alis.ideate.Spec.full_rfp:type_name -> alis.ideate.Spec.FullRfp
+	13, // 3: alis.ideate.Spec.idea_brief:type_name -> alis.ideate.Spec.IdeaBrief
+	14, // 4: alis.ideate.Spec.ui_design:type_name -> alis.ideate.Spec.UiDesign
+	15, // 5: alis.ideate.Spec.ai_prototype:type_name -> alis.ideate.Spec.AiPrototype
+	16, // 6: alis.ideate.Spec.ideate_spec:type_name -> alis.ideate.Spec.IdeateSpec
+	17, // 7: alis.ideate.Spec.business_case:type_name -> alis.ideate.Spec.BusinessCase
+	20, // 8: alis.ideate.Spec.current_process:type_name -> alis.ideate.Spec.CurrentProcess
+	21, // 9: alis.ideate.Spec.jargon:type_name -> alis.ideate.Spec.Jargon
+	22, // 10: alis.ideate.Spec.technology_landscape:type_name -> alis.ideate.Spec.TechnologyLandscape
+	23, // 11: alis.ideate.Spec.pain_points:type_name -> alis.ideate.Spec.PainPoints
+	24, // 12: alis.ideate.Spec.stakeholder_map:type_name -> alis.ideate.Spec.StakeholderMap
+	25, // 13: alis.ideate.Spec.figma_make:type_name -> alis.ideate.Spec.FigmaMake
+	26, // 14: alis.ideate.Spec.gemini_enterprise_custom_agent:type_name -> alis.ideate.Spec.GeminiEnterpriseCustomAgentSpec
+	27, // 15: alis.ideate.Spec.ai_studio:type_name -> alis.ideate.Spec.AiStudio
+	18, // 16: alis.ideate.Spec.solution_flow_spec:type_name -> alis.ideate.Spec.SolutionFlowSpec
+	28, // 17: alis.ideate.Spec.research_plan:type_name -> alis.ideate.Spec.ResearchPlan
+	29, // 18: alis.ideate.Spec.custom_agent:type_name -> alis.ideate.Spec.CustomAgent
+	30, // 19: alis.ideate.Spec.product_requirements_document:type_name -> alis.ideate.Spec.ProductRequirementsDocument
+	31, // 20: alis.ideate.Spec.agent_feedback:type_name -> alis.ideate.Spec.AgentFeedback
+	32, // 21: alis.ideate.Spec.generation_context:type_name -> alis.ideate.Spec.GenerationContext
+	34, // 22: alis.ideate.Spec.create_time:type_name -> google.protobuf.Timestamp
+	34, // 23: alis.ideate.Spec.update_time:type_name -> google.protobuf.Timestamp
+	34, // 24: alis.ideate.Spec.delete_time:type_name -> google.protobuf.Timestamp
+	35, // 25: alis.ideate.GetSpecRequest.read_mask:type_name -> google.protobuf.FieldMask
+	32, // 26: alis.ideate.GenerateCustomAgentSpecRequest.generation_context:type_name -> alis.ideate.Spec.GenerationContext
+	4,  // 27: alis.ideate.GenerateCustomAgentSpecMetadata.generate_custom_agent_spec_request:type_name -> alis.ideate.GenerateCustomAgentSpecRequest
+	2,  // 28: alis.ideate.GenerateCustomAgentSpecResponse.spec:type_name -> alis.ideate.Spec
+	0,  // 29: alis.ideate.RetrieveIdeaSpecsRequest.spec_type:type_name -> alis.ideate.Spec.Type
+	2,  // 30: alis.ideate.RetrieveIdeaSpecsResponse.specs:type_name -> alis.ideate.Spec
+	32, // 31: alis.ideate.GenerateAgentFeedbackSpecRequest.generation_context:type_name -> alis.ideate.Spec.GenerationContext
+	9,  // 32: alis.ideate.GenerateAgentFeedbackSpecMetadata.generate_agent_feedback_spec_request:type_name -> alis.ideate.GenerateAgentFeedbackSpecRequest
+	2,  // 33: alis.ideate.GenerateAgentFeedbackSpecResponse.spec:type_name -> alis.ideate.Spec
+	33, // 34: alis.ideate.Spec.AgentFeedback.target_agents:type_name -> alis.ideate.Spec.AgentFeedback.TargetAgent
+	36, // 35: alis.ideate.Spec.AgentFeedback.TargetAgent.agent_card:type_name -> alis.ideate.AgentCard
+	36, // [36:36] is the sub-list for method output_type
+	36, // [36:36] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_alis_ideate_spec_proto_init() }
@@ -2274,6 +2650,7 @@ func file_alis_ideate_spec_proto_init() {
 	if File_alis_ideate_spec_proto != nil {
 		return
 	}
+	file_alis_ideate_agent_card_proto_init()
 	file_alis_ideate_spec_proto_msgTypes[0].OneofWrappers = []any{
 		(*Spec_FullRfp_)(nil),
 		(*Spec_IdeaBrief_)(nil),
@@ -2293,10 +2670,15 @@ func file_alis_ideate_spec_proto_init() {
 		(*Spec_ResearchPlan_)(nil),
 		(*Spec_CustomAgent_)(nil),
 		(*Spec_ProductRequirementsDocument_)(nil),
+		(*Spec_AgentFeedback_)(nil),
 	}
 	file_alis_ideate_spec_proto_msgTypes[2].OneofWrappers = []any{
 		(*GenerateCustomAgentSpecRequest_Idea)(nil),
 		(*GenerateCustomAgentSpecRequest_Spec)(nil),
+	}
+	file_alis_ideate_spec_proto_msgTypes[7].OneofWrappers = []any{
+		(*GenerateAgentFeedbackSpecRequest_Idea)(nil),
+		(*GenerateAgentFeedbackSpecRequest_Spec)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2304,7 +2686,7 @@ func file_alis_ideate_spec_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alis_ideate_spec_proto_rawDesc), len(file_alis_ideate_spec_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   27,
+			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

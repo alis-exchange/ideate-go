@@ -2349,7 +2349,7 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\x17RESTRICTION_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aNO_SEAT\x10\x01\x12\x11\n" +
 	"\rTRIAL_EXPIRED\x10\x02\x12\x17\n" +
-	"\x13PLAN_LIMITS_REACHED\x10\x032\xa3\b\n" +
+	"\x13PLAN_LIMITS_REACHED\x10\x032\x90\t\n" +
 	"\rIdeateService\x12F\n" +
 	"\aAddNote\x12\x1b.alis.ideate.AddNoteRequest\x1a\x1c.alis.ideate.AddNoteResponse\"\x00\x12U\n" +
 	"\fAddAudioNote\x12 .alis.ideate.AddAudioNoteRequest\x1a!.alis.ideate.AddAudioNoteResponse\"\x00\x12g\n" +
@@ -2360,7 +2360,8 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\tGetStream\x12\x1d.alis.ideate.GetStreamRequest\x1a\x13.alis.ideate.Stream\"\x00\x12;\n" +
 	"\aGetSpec\x12\x1b.alis.ideate.GetSpecRequest\x1a\x11.alis.ideate.Spec\"\x00\x12d\n" +
 	"\x11RetrieveIdeaSpecs\x12%.alis.ideate.RetrieveIdeaSpecsRequest\x1a&.alis.ideate.RetrieveIdeaSpecsResponse\"\x00\x12g\n" +
-	"\x17GenerateCustomAgentSpec\x12+.alis.ideate.GenerateCustomAgentSpecRequest\x1a\x1d.google.longrunning.Operation\"\x00\x12a\n" +
+	"\x17GenerateCustomAgentSpec\x12+.alis.ideate.GenerateCustomAgentSpecRequest\x1a\x1d.google.longrunning.Operation\"\x00\x12k\n" +
+	"\x19GenerateAgentFeedbackSpec\x12-.alis.ideate.GenerateAgentFeedbackSpecRequest\x1a\x1d.google.longrunning.Operation\"\x00\x12a\n" +
 	"\x10TestIdeateAccess\x12$.alis.ideate.TestIdeateAccessRequest\x1a%.alis.ideate.TestIdeateAccessResponse\"\x00\x12X\n" +
 	"\fGetOperation\x12'.google.longrunning.GetOperationRequest\x1a\x1d.google.longrunning.Operation\"\x00B0Z.github.com/alis-exchange/ideate-go/alis/ideateb\x06proto3"
 
@@ -2403,18 +2404,19 @@ var file_alis_ideate_ideate_proto_goTypes = []any{
 	(*InitialiseAgentFeedbackResponse_AudioNote)(nil),            // 21: alis.ideate.InitialiseAgentFeedbackResponse.AudioNote
 	(*InitialiseAgentFeedbackResponse_MultiFileUpload)(nil),      // 22: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
 	(*InitialiseAgentFeedbackResponse_MultiFileUpload_File)(nil), // 23: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
-	(*Stream)(nil),                          // 24: alis.ideate.Stream
-	(*AgentCard)(nil),                       // 25: alis.ideate.AgentCard
-	(*GetIdeaRequest)(nil),                  // 26: alis.ideate.GetIdeaRequest
-	(*GetStreamRequest)(nil),                // 27: alis.ideate.GetStreamRequest
-	(*GetSpecRequest)(nil),                  // 28: alis.ideate.GetSpecRequest
-	(*RetrieveIdeaSpecsRequest)(nil),        // 29: alis.ideate.RetrieveIdeaSpecsRequest
-	(*GenerateCustomAgentSpecRequest)(nil),  // 30: alis.ideate.GenerateCustomAgentSpecRequest
-	(*longrunning.GetOperationRequest)(nil), // 31: google.longrunning.GetOperationRequest
-	(*Idea)(nil),                            // 32: alis.ideate.Idea
-	(*Spec)(nil),                            // 33: alis.ideate.Spec
-	(*RetrieveIdeaSpecsResponse)(nil),       // 34: alis.ideate.RetrieveIdeaSpecsResponse
-	(*longrunning.Operation)(nil),           // 35: google.longrunning.Operation
+	(*Stream)(nil),                           // 24: alis.ideate.Stream
+	(*AgentCard)(nil),                        // 25: alis.ideate.AgentCard
+	(*GetIdeaRequest)(nil),                   // 26: alis.ideate.GetIdeaRequest
+	(*GetStreamRequest)(nil),                 // 27: alis.ideate.GetStreamRequest
+	(*GetSpecRequest)(nil),                   // 28: alis.ideate.GetSpecRequest
+	(*RetrieveIdeaSpecsRequest)(nil),         // 29: alis.ideate.RetrieveIdeaSpecsRequest
+	(*GenerateCustomAgentSpecRequest)(nil),   // 30: alis.ideate.GenerateCustomAgentSpecRequest
+	(*GenerateAgentFeedbackSpecRequest)(nil), // 31: alis.ideate.GenerateAgentFeedbackSpecRequest
+	(*longrunning.GetOperationRequest)(nil),  // 32: google.longrunning.GetOperationRequest
+	(*Idea)(nil),                             // 33: alis.ideate.Idea
+	(*Spec)(nil),                             // 34: alis.ideate.Spec
+	(*RetrieveIdeaSpecsResponse)(nil),        // 35: alis.ideate.RetrieveIdeaSpecsResponse
+	(*longrunning.Operation)(nil),            // 36: google.longrunning.Operation
 }
 var file_alis_ideate_ideate_proto_depIdxs = []int32{
 	24, // 0: alis.ideate.AddNoteResponse.stream:type_name -> alis.ideate.Stream
@@ -2447,22 +2449,24 @@ var file_alis_ideate_ideate_proto_depIdxs = []int32{
 	28, // 27: alis.ideate.IdeateService.GetSpec:input_type -> alis.ideate.GetSpecRequest
 	29, // 28: alis.ideate.IdeateService.RetrieveIdeaSpecs:input_type -> alis.ideate.RetrieveIdeaSpecsRequest
 	30, // 29: alis.ideate.IdeateService.GenerateCustomAgentSpec:input_type -> alis.ideate.GenerateCustomAgentSpecRequest
-	11, // 30: alis.ideate.IdeateService.TestIdeateAccess:input_type -> alis.ideate.TestIdeateAccessRequest
-	31, // 31: alis.ideate.IdeateService.GetOperation:input_type -> google.longrunning.GetOperationRequest
-	2,  // 32: alis.ideate.IdeateService.AddNote:output_type -> alis.ideate.AddNoteResponse
-	4,  // 33: alis.ideate.IdeateService.AddAudioNote:output_type -> alis.ideate.AddAudioNoteResponse
-	6,  // 34: alis.ideate.IdeateService.AddMultiFileUpload:output_type -> alis.ideate.AddMultiFileUploadResponse
-	8,  // 35: alis.ideate.IdeateService.AddAgent:output_type -> alis.ideate.AddAgentResponse
-	10, // 36: alis.ideate.IdeateService.InitialiseAgentFeedback:output_type -> alis.ideate.InitialiseAgentFeedbackResponse
-	32, // 37: alis.ideate.IdeateService.GetIdea:output_type -> alis.ideate.Idea
-	24, // 38: alis.ideate.IdeateService.GetStream:output_type -> alis.ideate.Stream
-	33, // 39: alis.ideate.IdeateService.GetSpec:output_type -> alis.ideate.Spec
-	34, // 40: alis.ideate.IdeateService.RetrieveIdeaSpecs:output_type -> alis.ideate.RetrieveIdeaSpecsResponse
-	35, // 41: alis.ideate.IdeateService.GenerateCustomAgentSpec:output_type -> google.longrunning.Operation
-	12, // 42: alis.ideate.IdeateService.TestIdeateAccess:output_type -> alis.ideate.TestIdeateAccessResponse
-	35, // 43: alis.ideate.IdeateService.GetOperation:output_type -> google.longrunning.Operation
-	32, // [32:44] is the sub-list for method output_type
-	20, // [20:32] is the sub-list for method input_type
+	31, // 30: alis.ideate.IdeateService.GenerateAgentFeedbackSpec:input_type -> alis.ideate.GenerateAgentFeedbackSpecRequest
+	11, // 31: alis.ideate.IdeateService.TestIdeateAccess:input_type -> alis.ideate.TestIdeateAccessRequest
+	32, // 32: alis.ideate.IdeateService.GetOperation:input_type -> google.longrunning.GetOperationRequest
+	2,  // 33: alis.ideate.IdeateService.AddNote:output_type -> alis.ideate.AddNoteResponse
+	4,  // 34: alis.ideate.IdeateService.AddAudioNote:output_type -> alis.ideate.AddAudioNoteResponse
+	6,  // 35: alis.ideate.IdeateService.AddMultiFileUpload:output_type -> alis.ideate.AddMultiFileUploadResponse
+	8,  // 36: alis.ideate.IdeateService.AddAgent:output_type -> alis.ideate.AddAgentResponse
+	10, // 37: alis.ideate.IdeateService.InitialiseAgentFeedback:output_type -> alis.ideate.InitialiseAgentFeedbackResponse
+	33, // 38: alis.ideate.IdeateService.GetIdea:output_type -> alis.ideate.Idea
+	24, // 39: alis.ideate.IdeateService.GetStream:output_type -> alis.ideate.Stream
+	34, // 40: alis.ideate.IdeateService.GetSpec:output_type -> alis.ideate.Spec
+	35, // 41: alis.ideate.IdeateService.RetrieveIdeaSpecs:output_type -> alis.ideate.RetrieveIdeaSpecsResponse
+	36, // 42: alis.ideate.IdeateService.GenerateCustomAgentSpec:output_type -> google.longrunning.Operation
+	36, // 43: alis.ideate.IdeateService.GenerateAgentFeedbackSpec:output_type -> google.longrunning.Operation
+	12, // 44: alis.ideate.IdeateService.TestIdeateAccess:output_type -> alis.ideate.TestIdeateAccessResponse
+	36, // 45: alis.ideate.IdeateService.GetOperation:output_type -> google.longrunning.Operation
+	33, // [33:46] is the sub-list for method output_type
+	20, // [20:33] is the sub-list for method input_type
 	20, // [20:20] is the sub-list for extension type_name
 	20, // [20:20] is the sub-list for extension extendee
 	0,  // [0:20] is the sub-list for field type_name
