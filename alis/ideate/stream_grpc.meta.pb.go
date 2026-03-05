@@ -3,7 +3,7 @@
 // Source: alis/ideate/stream.proto
 // Plugin version: v0.0.1
 //
-// Generated on: 2026-03-05 12:28:39 UTC
+// Generated on: 2026-03-05 12:57:20 UTC
 
 package ideate
 
