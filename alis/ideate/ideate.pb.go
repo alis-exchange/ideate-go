@@ -1075,10 +1075,12 @@ type AddResearchInterviewRequest struct {
 	//	*AddResearchInterviewRequest_Idea
 	StreamTarget isAddResearchInterviewRequest_StreamTarget `protobuf_oneof:"stream_target"`
 	// The research plan for the interview
-	ResearchPlan string `protobuf:"bytes,2,opt,name=research_plan,json=researchPlan,proto3" json:"research_plan,omitempty"`
+	Title string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	// The research plan for the interview
+	ResearchPlan string `protobuf:"bytes,3,opt,name=research_plan,json=researchPlan,proto3" json:"research_plan,omitempty"`
 	// Email addresses of users to invite as participants. Resolved
 	// server-side to user resource names
-	ParticipantEmails []string `protobuf:"bytes,3,rep,name=participant_emails,json=participantEmails,proto3" json:"participant_emails,omitempty"`
+	ParticipantEmails []string `protobuf:"bytes,4,rep,name=participant_emails,json=participantEmails,proto3" json:"participant_emails,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -1125,6 +1127,13 @@ func (x *AddResearchInterviewRequest) GetIdea() string {
 		if x, ok := x.StreamTarget.(*AddResearchInterviewRequest_Idea); ok {
 			return x.Idea
 		}
+	}
+	return ""
+}
+
+func (x *AddResearchInterviewRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
 	}
 	return ""
 }
@@ -2426,11 +2435,12 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\rstream_targetB\x13\n" +
 	"\x11agent_card_source\"?\n" +
 	"\x10AddAgentResponse\x12+\n" +
-	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\x98\x01\n" +
+	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xae\x01\n" +
 	"\x1bAddResearchInterviewRequest\x12\x14\n" +
-	"\x04idea\x18\x01 \x01(\tH\x00R\x04idea\x12#\n" +
-	"\rresearch_plan\x18\x02 \x01(\tR\fresearchPlan\x12-\n" +
-	"\x12participant_emails\x18\x03 \x03(\tR\x11participantEmailsB\x0f\n" +
+	"\x04idea\x18\x01 \x01(\tH\x00R\x04idea\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12#\n" +
+	"\rresearch_plan\x18\x03 \x01(\tR\fresearchPlan\x12-\n" +
+	"\x12participant_emails\x18\x04 \x03(\tR\x11participantEmailsB\x0f\n" +
 	"\rstream_target\"K\n" +
 	"\x1cAddResearchInterviewResponse\x12+\n" +
 	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xfd\b\n" +
