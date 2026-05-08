@@ -3,7 +3,7 @@
 // Source: alis/ideate/ideate.proto
 // Plugin version: v0.0.1
 //
-// Generated on: 2026-05-08 12:51:57 UTC
+// Generated on: 2026-05-08 14:24:36 UTC
 
 package ideate
 
@@ -15,7 +15,9 @@ const (
 	// IdeateService_AddMultiFileUpload_FullMethodDescription returns the description of the alis.ideate.IdeateService.AddMultiFileUpload method.
 	IdeateService_AddMultiFileUpload_FullMethodDescription = "Adds a new Idea with a multi-file upload Stream type"
 	// IdeateService_AddAgent_FullMethodDescription returns the description of the alis.ideate.IdeateService.AddAgent method.
-	IdeateService_AddAgent_FullMethodDescription = "Adds a new Idea with a multi-file upload Stream type"
+	IdeateService_AddAgent_FullMethodDescription = "Adds a new Idea with an agent Stream type"
+	// IdeateService_AddResearchInterview_FullMethodDescription returns the description of the alis.ideate.IdeateService.AddResearchInterview method.
+	IdeateService_AddResearchInterview_FullMethodDescription = "Adds a new Idea with a Stream type"
 	// IdeateService_InitialiseAgentFeedback_FullMethodDescription returns the description of the alis.ideate.IdeateService.InitialiseAgentFeedback method.
 	IdeateService_InitialiseAgentFeedback_FullMethodDescription = "Provides an easy to use entry point to provide feedback about the interaction with an agent This will essentially create a new Contribution Session within the StreamTarget\n with two Streams:\n 1. Agent type Stream - provides context to Ideate about the agent\n 2. {Whatever the Stream added stream was}\n\n The response contains both of the resulting Streams"
 	// IdeateService_GetIdea_FullMethodDescription returns the description of the alis.ideate.IdeateService.GetIdea method.

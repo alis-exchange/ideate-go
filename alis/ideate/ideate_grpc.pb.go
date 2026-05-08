@@ -24,6 +24,7 @@ const (
 	IdeateService_AddAudioNote_FullMethodName              = "/alis.ideate.IdeateService/AddAudioNote"
 	IdeateService_AddMultiFileUpload_FullMethodName        = "/alis.ideate.IdeateService/AddMultiFileUpload"
 	IdeateService_AddAgent_FullMethodName                  = "/alis.ideate.IdeateService/AddAgent"
+	IdeateService_AddResearchInterview_FullMethodName      = "/alis.ideate.IdeateService/AddResearchInterview"
 	IdeateService_InitialiseAgentFeedback_FullMethodName   = "/alis.ideate.IdeateService/InitialiseAgentFeedback"
 	IdeateService_GetIdea_FullMethodName                   = "/alis.ideate.IdeateService/GetIdea"
 	IdeateService_GetStream_FullMethodName                 = "/alis.ideate.IdeateService/GetStream"
@@ -47,8 +48,10 @@ type IdeateServiceClient interface {
 	AddAudioNote(ctx context.Context, in *AddAudioNoteRequest, opts ...grpc.CallOption) (*AddAudioNoteResponse, error)
 	// Adds a new Idea with a multi-file upload Stream type
 	AddMultiFileUpload(ctx context.Context, in *AddMultiFileUploadRequest, opts ...grpc.CallOption) (*AddMultiFileUploadResponse, error)
-	// Adds a new Idea with a multi-file upload Stream type
+	// Adds a new Idea with an agent Stream type
 	AddAgent(ctx context.Context, in *AddAgentRequest, opts ...grpc.CallOption) (*AddAgentResponse, error)
+	// Adds a new Idea with a Stream type
+	AddResearchInterview(ctx context.Context, in *AddResearchInterviewRequest, opts ...grpc.CallOption) (*AddResearchInterviewResponse, error)
 	// Provides an easy to use entry point to provide feedback about the interaction with an agent
 	//
 	// This will essentially create a new Contribution Session within the StreamTarget
@@ -122,6 +125,16 @@ func (c *ideateServiceClient) AddAgent(ctx context.Context, in *AddAgentRequest,
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AddAgentResponse)
 	err := c.cc.Invoke(ctx, IdeateService_AddAgent_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ideateServiceClient) AddResearchInterview(ctx context.Context, in *AddResearchInterviewRequest, opts ...grpc.CallOption) (*AddResearchInterviewResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddResearchInterviewResponse)
+	err := c.cc.Invoke(ctx, IdeateService_AddResearchInterview_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -230,8 +243,10 @@ type IdeateServiceServer interface {
 	AddAudioNote(context.Context, *AddAudioNoteRequest) (*AddAudioNoteResponse, error)
 	// Adds a new Idea with a multi-file upload Stream type
 	AddMultiFileUpload(context.Context, *AddMultiFileUploadRequest) (*AddMultiFileUploadResponse, error)
-	// Adds a new Idea with a multi-file upload Stream type
+	// Adds a new Idea with an agent Stream type
 	AddAgent(context.Context, *AddAgentRequest) (*AddAgentResponse, error)
+	// Adds a new Idea with a Stream type
+	AddResearchInterview(context.Context, *AddResearchInterviewRequest) (*AddResearchInterviewResponse, error)
 	// Provides an easy to use entry point to provide feedback about the interaction with an agent
 	//
 	// This will essentially create a new Contribution Session within the StreamTarget
@@ -282,6 +297,9 @@ func (UnimplementedIdeateServiceServer) AddMultiFileUpload(context.Context, *Add
 }
 func (UnimplementedIdeateServiceServer) AddAgent(context.Context, *AddAgentRequest) (*AddAgentResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddAgent not implemented")
+}
+func (UnimplementedIdeateServiceServer) AddResearchInterview(context.Context, *AddResearchInterviewRequest) (*AddResearchInterviewResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddResearchInterview not implemented")
 }
 func (UnimplementedIdeateServiceServer) InitialiseAgentFeedback(context.Context, *InitialiseAgentFeedbackRequest) (*InitialiseAgentFeedbackResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method InitialiseAgentFeedback not implemented")
@@ -399,6 +417,24 @@ func _IdeateService_AddAgent_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdeateServiceServer).AddAgent(ctx, req.(*AddAgentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdeateService_AddResearchInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddResearchInterviewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdeateServiceServer).AddResearchInterview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdeateService_AddResearchInterview_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdeateServiceServer).AddResearchInterview(ctx, req.(*AddResearchInterviewRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -587,6 +623,10 @@ var IdeateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddAgent",
 			Handler:    _IdeateService_AddAgent_Handler,
+		},
+		{
+			MethodName: "AddResearchInterview",
+			Handler:    _IdeateService_AddResearchInterview_Handler,
 		},
 		{
 			MethodName: "InitialiseAgentFeedback",

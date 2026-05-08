@@ -76,7 +76,7 @@ func (x TestIdeateAccessResponse_Restriction) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TestIdeateAccessResponse_Restriction.Descriptor instead.
 func (TestIdeateAccessResponse_Restriction) EnumDescriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11, 0}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{13, 0}
 }
 
 // Request message for AddNote
@@ -1063,6 +1063,147 @@ func (x *AddAgentResponse) GetStream() *Stream {
 	return nil
 }
 
+// Request message for AddResearchInterview
+type AddResearchInterviewRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Stream target sets the expected behaviour of the Stream to create.
+	// The resulting Stream will be created within either a new or existing idea,
+	// or can be in the fulfilment of a context request.
+	//
+	// Types that are valid to be assigned to StreamTarget:
+	//
+	//	*AddResearchInterviewRequest_Idea
+	StreamTarget isAddResearchInterviewRequest_StreamTarget `protobuf_oneof:"stream_target"`
+	// The research plan for the interview
+	ResearchPlan string `protobuf:"bytes,2,opt,name=research_plan,json=researchPlan,proto3" json:"research_plan,omitempty"`
+	// Email addresses of users to invite as participants. Resolved
+	// server-side to user resource names
+	ParticipantEmails []string `protobuf:"bytes,3,rep,name=participant_emails,json=participantEmails,proto3" json:"participant_emails,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *AddResearchInterviewRequest) Reset() {
+	*x = AddResearchInterviewRequest{}
+	mi := &file_alis_ideate_ideate_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddResearchInterviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddResearchInterviewRequest) ProtoMessage() {}
+
+func (x *AddResearchInterviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_ideate_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddResearchInterviewRequest.ProtoReflect.Descriptor instead.
+func (*AddResearchInterviewRequest) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *AddResearchInterviewRequest) GetStreamTarget() isAddResearchInterviewRequest_StreamTarget {
+	if x != nil {
+		return x.StreamTarget
+	}
+	return nil
+}
+
+func (x *AddResearchInterviewRequest) GetIdea() string {
+	if x != nil {
+		if x, ok := x.StreamTarget.(*AddResearchInterviewRequest_Idea); ok {
+			return x.Idea
+		}
+	}
+	return ""
+}
+
+func (x *AddResearchInterviewRequest) GetResearchPlan() string {
+	if x != nil {
+		return x.ResearchPlan
+	}
+	return ""
+}
+
+func (x *AddResearchInterviewRequest) GetParticipantEmails() []string {
+	if x != nil {
+		return x.ParticipantEmails
+	}
+	return nil
+}
+
+type isAddResearchInterviewRequest_StreamTarget interface {
+	isAddResearchInterviewRequest_StreamTarget()
+}
+
+type AddResearchInterviewRequest_Idea struct {
+	// The Idea to add the Stream to. Will create if not specified.
+	// Format: ideas/*
+	//
+	// Target: Add Stream to an existing Idea.
+	// Requirements: The user must have access to the idea
+	Idea string `protobuf:"bytes,1,opt,name=idea,proto3,oneof"`
+}
+
+func (*AddResearchInterviewRequest_Idea) isAddResearchInterviewRequest_StreamTarget() {}
+
+// Response message for AddResearchInterview
+type AddResearchInterviewResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Stream that was created
+	Stream        *Stream `protobuf:"bytes,1,opt,name=stream,proto3" json:"stream,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddResearchInterviewResponse) Reset() {
+	*x = AddResearchInterviewResponse{}
+	mi := &file_alis_ideate_ideate_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddResearchInterviewResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddResearchInterviewResponse) ProtoMessage() {}
+
+func (x *AddResearchInterviewResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alis_ideate_ideate_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddResearchInterviewResponse.ProtoReflect.Descriptor instead.
+func (*AddResearchInterviewResponse) Descriptor() ([]byte, []int) {
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *AddResearchInterviewResponse) GetStream() *Stream {
+	if x != nil {
+		return x.Stream
+	}
+	return nil
+}
+
 // Request message for InitialiseAgentFeedback
 type InitialiseAgentFeedbackRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1091,7 +1232,7 @@ type InitialiseAgentFeedbackRequest struct {
 
 func (x *InitialiseAgentFeedbackRequest) Reset() {
 	*x = InitialiseAgentFeedbackRequest{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[8]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1103,7 +1244,7 @@ func (x *InitialiseAgentFeedbackRequest) String() string {
 func (*InitialiseAgentFeedbackRequest) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[8]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1116,7 +1257,7 @@ func (x *InitialiseAgentFeedbackRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitialiseAgentFeedbackRequest.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackRequest) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *InitialiseAgentFeedbackRequest) GetStreamTarget() isInitialiseAgentFeedbackRequest_StreamTarget {
@@ -1301,7 +1442,7 @@ type InitialiseAgentFeedbackResponse struct {
 
 func (x *InitialiseAgentFeedbackResponse) Reset() {
 	*x = InitialiseAgentFeedbackResponse{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[9]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1313,7 +1454,7 @@ func (x *InitialiseAgentFeedbackResponse) String() string {
 func (*InitialiseAgentFeedbackResponse) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[9]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1326,7 +1467,7 @@ func (x *InitialiseAgentFeedbackResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitialiseAgentFeedbackResponse.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackResponse) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{9}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *InitialiseAgentFeedbackResponse) GetContentStream() *Stream {
@@ -1416,7 +1557,7 @@ type TestIdeateAccessRequest struct {
 
 func (x *TestIdeateAccessRequest) Reset() {
 	*x = TestIdeateAccessRequest{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[10]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1428,7 +1569,7 @@ func (x *TestIdeateAccessRequest) String() string {
 func (*TestIdeateAccessRequest) ProtoMessage() {}
 
 func (x *TestIdeateAccessRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[10]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1441,7 +1582,7 @@ func (x *TestIdeateAccessRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestIdeateAccessRequest.ProtoReflect.Descriptor instead.
 func (*TestIdeateAccessRequest) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *TestIdeateAccessRequest) GetAccount() string {
@@ -1462,7 +1603,7 @@ type TestIdeateAccessResponse struct {
 
 func (x *TestIdeateAccessResponse) Reset() {
 	*x = TestIdeateAccessResponse{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[11]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1474,7 +1615,7 @@ func (x *TestIdeateAccessResponse) String() string {
 func (*TestIdeateAccessResponse) ProtoMessage() {}
 
 func (x *TestIdeateAccessResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[11]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1487,7 +1628,7 @@ func (x *TestIdeateAccessResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestIdeateAccessResponse.ProtoReflect.Descriptor instead.
 func (*TestIdeateAccessResponse) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *TestIdeateAccessResponse) GetRestriction() TestIdeateAccessResponse_Restriction {
@@ -1525,7 +1666,7 @@ type AddMultiFileUploadRequest_File struct {
 
 func (x *AddMultiFileUploadRequest_File) Reset() {
 	*x = AddMultiFileUploadRequest_File{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[12]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1537,7 +1678,7 @@ func (x *AddMultiFileUploadRequest_File) String() string {
 func (*AddMultiFileUploadRequest_File) ProtoMessage() {}
 
 func (x *AddMultiFileUploadRequest_File) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[12]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1592,7 +1733,7 @@ type AddMultiFileUploadResponse_File struct {
 
 func (x *AddMultiFileUploadResponse_File) Reset() {
 	*x = AddMultiFileUploadResponse_File{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[13]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1604,7 +1745,7 @@ func (x *AddMultiFileUploadResponse_File) String() string {
 func (*AddMultiFileUploadResponse_File) ProtoMessage() {}
 
 func (x *AddMultiFileUploadResponse_File) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[13]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1664,7 +1805,7 @@ type InitialiseAgentFeedbackRequest_AgentInteraction struct {
 
 func (x *InitialiseAgentFeedbackRequest_AgentInteraction) Reset() {
 	*x = InitialiseAgentFeedbackRequest_AgentInteraction{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[14]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1676,7 +1817,7 @@ func (x *InitialiseAgentFeedbackRequest_AgentInteraction) String() string {
 func (*InitialiseAgentFeedbackRequest_AgentInteraction) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackRequest_AgentInteraction) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[14]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1689,7 +1830,7 @@ func (x *InitialiseAgentFeedbackRequest_AgentInteraction) ProtoReflect() protore
 
 // Deprecated: Use InitialiseAgentFeedbackRequest_AgentInteraction.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackRequest_AgentInteraction) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8, 0}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10, 0}
 }
 
 func (x *InitialiseAgentFeedbackRequest_AgentInteraction) GetAgentCardSource() isInitialiseAgentFeedbackRequest_AgentInteraction_AgentCardSource {
@@ -1761,7 +1902,7 @@ type InitialiseAgentFeedbackRequest_Note struct {
 
 func (x *InitialiseAgentFeedbackRequest_Note) Reset() {
 	*x = InitialiseAgentFeedbackRequest_Note{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[15]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1773,7 +1914,7 @@ func (x *InitialiseAgentFeedbackRequest_Note) String() string {
 func (*InitialiseAgentFeedbackRequest_Note) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackRequest_Note) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[15]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1786,7 +1927,7 @@ func (x *InitialiseAgentFeedbackRequest_Note) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use InitialiseAgentFeedbackRequest_Note.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackRequest_Note) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8, 1}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10, 1}
 }
 
 func (x *InitialiseAgentFeedbackRequest_Note) GetContent() string {
@@ -1827,7 +1968,7 @@ type InitialiseAgentFeedbackRequest_AudioNote struct {
 
 func (x *InitialiseAgentFeedbackRequest_AudioNote) Reset() {
 	*x = InitialiseAgentFeedbackRequest_AudioNote{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[16]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1839,7 +1980,7 @@ func (x *InitialiseAgentFeedbackRequest_AudioNote) String() string {
 func (*InitialiseAgentFeedbackRequest_AudioNote) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackRequest_AudioNote) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[16]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1852,7 +1993,7 @@ func (x *InitialiseAgentFeedbackRequest_AudioNote) ProtoReflect() protoreflect.M
 
 // Deprecated: Use InitialiseAgentFeedbackRequest_AudioNote.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackRequest_AudioNote) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8, 2}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10, 2}
 }
 
 func (x *InitialiseAgentFeedbackRequest_AudioNote) GetMimeType() string {
@@ -1895,7 +2036,7 @@ type InitialiseAgentFeedbackRequest_MultiFileUpload struct {
 
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) Reset() {
 	*x = InitialiseAgentFeedbackRequest_MultiFileUpload{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[17]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1907,7 +2048,7 @@ func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) String() string {
 func (*InitialiseAgentFeedbackRequest_MultiFileUpload) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[17]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1920,7 +2061,7 @@ func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) ProtoReflect() protoref
 
 // Deprecated: Use InitialiseAgentFeedbackRequest_MultiFileUpload.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackRequest_MultiFileUpload) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8, 3}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10, 3}
 }
 
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload) GetNote() string {
@@ -1972,7 +2113,7 @@ type InitialiseAgentFeedbackRequest_MultiFileUpload_File struct {
 
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) Reset() {
 	*x = InitialiseAgentFeedbackRequest_MultiFileUpload_File{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[18]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1984,7 +2125,7 @@ func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) String() string {
 func (*InitialiseAgentFeedbackRequest_MultiFileUpload_File) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[18]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1997,7 +2138,7 @@ func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) ProtoReflect() pro
 
 // Deprecated: Use InitialiseAgentFeedbackRequest_MultiFileUpload_File.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackRequest_MultiFileUpload_File) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{8, 3, 0}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{10, 3, 0}
 }
 
 func (x *InitialiseAgentFeedbackRequest_MultiFileUpload_File) GetFilename() string {
@@ -2031,7 +2172,7 @@ type InitialiseAgentFeedbackResponse_Note struct {
 
 func (x *InitialiseAgentFeedbackResponse_Note) Reset() {
 	*x = InitialiseAgentFeedbackResponse_Note{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[19]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2043,7 +2184,7 @@ func (x *InitialiseAgentFeedbackResponse_Note) String() string {
 func (*InitialiseAgentFeedbackResponse_Note) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackResponse_Note) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[19]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2056,7 +2197,7 @@ func (x *InitialiseAgentFeedbackResponse_Note) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use InitialiseAgentFeedbackResponse_Note.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackResponse_Note) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{9, 0}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11, 0}
 }
 
 // Definition of AudioNote
@@ -2070,7 +2211,7 @@ type InitialiseAgentFeedbackResponse_AudioNote struct {
 
 func (x *InitialiseAgentFeedbackResponse_AudioNote) Reset() {
 	*x = InitialiseAgentFeedbackResponse_AudioNote{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[20]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2082,7 +2223,7 @@ func (x *InitialiseAgentFeedbackResponse_AudioNote) String() string {
 func (*InitialiseAgentFeedbackResponse_AudioNote) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackResponse_AudioNote) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[20]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2095,7 +2236,7 @@ func (x *InitialiseAgentFeedbackResponse_AudioNote) ProtoReflect() protoreflect.
 
 // Deprecated: Use InitialiseAgentFeedbackResponse_AudioNote.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackResponse_AudioNote) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{9, 1}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11, 1}
 }
 
 func (x *InitialiseAgentFeedbackResponse_AudioNote) GetUploadUri() string {
@@ -2116,7 +2257,7 @@ type InitialiseAgentFeedbackResponse_MultiFileUpload struct {
 
 func (x *InitialiseAgentFeedbackResponse_MultiFileUpload) Reset() {
 	*x = InitialiseAgentFeedbackResponse_MultiFileUpload{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[21]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2128,7 +2269,7 @@ func (x *InitialiseAgentFeedbackResponse_MultiFileUpload) String() string {
 func (*InitialiseAgentFeedbackResponse_MultiFileUpload) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackResponse_MultiFileUpload) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[21]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2141,7 +2282,7 @@ func (x *InitialiseAgentFeedbackResponse_MultiFileUpload) ProtoReflect() protore
 
 // Deprecated: Use InitialiseAgentFeedbackResponse_MultiFileUpload.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackResponse_MultiFileUpload) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{9, 2}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11, 2}
 }
 
 func (x *InitialiseAgentFeedbackResponse_MultiFileUpload) GetFiles() []*InitialiseAgentFeedbackResponse_MultiFileUpload_File {
@@ -2169,7 +2310,7 @@ type InitialiseAgentFeedbackResponse_MultiFileUpload_File struct {
 
 func (x *InitialiseAgentFeedbackResponse_MultiFileUpload_File) Reset() {
 	*x = InitialiseAgentFeedbackResponse_MultiFileUpload_File{}
-	mi := &file_alis_ideate_ideate_proto_msgTypes[22]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2181,7 +2322,7 @@ func (x *InitialiseAgentFeedbackResponse_MultiFileUpload_File) String() string {
 func (*InitialiseAgentFeedbackResponse_MultiFileUpload_File) ProtoMessage() {}
 
 func (x *InitialiseAgentFeedbackResponse_MultiFileUpload_File) ProtoReflect() protoreflect.Message {
-	mi := &file_alis_ideate_ideate_proto_msgTypes[22]
+	mi := &file_alis_ideate_ideate_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2194,7 +2335,7 @@ func (x *InitialiseAgentFeedbackResponse_MultiFileUpload_File) ProtoReflect() pr
 
 // Deprecated: Use InitialiseAgentFeedbackResponse_MultiFileUpload_File.ProtoReflect.Descriptor instead.
 func (*InitialiseAgentFeedbackResponse_MultiFileUpload_File) Descriptor() ([]byte, []int) {
-	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{9, 2, 0}
+	return file_alis_ideate_ideate_proto_rawDescGZIP(), []int{11, 2, 0}
 }
 
 func (x *InitialiseAgentFeedbackResponse_MultiFileUpload_File) GetFilename() string {
@@ -2285,6 +2426,13 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\rstream_targetB\x13\n" +
 	"\x11agent_card_source\"?\n" +
 	"\x10AddAgentResponse\x12+\n" +
+	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\x98\x01\n" +
+	"\x1bAddResearchInterviewRequest\x12\x14\n" +
+	"\x04idea\x18\x01 \x01(\tH\x00R\x04idea\x12#\n" +
+	"\rresearch_plan\x18\x02 \x01(\tR\fresearchPlan\x12-\n" +
+	"\x12participant_emails\x18\x03 \x03(\tR\x11participantEmailsB\x0f\n" +
+	"\rstream_target\"K\n" +
+	"\x1cAddResearchInterviewResponse\x12+\n" +
 	"\x06stream\x18\x01 \x01(\v2\x13.alis.ideate.StreamR\x06stream\"\xfd\b\n" +
 	"\x1eInitialiseAgentFeedbackRequest\x12\x1a\n" +
 	"\aaccount\x18\x01 \x01(\tH\x00R\aaccount\x12\x14\n" +
@@ -2349,12 +2497,13 @@ const file_alis_ideate_ideate_proto_rawDesc = "" +
 	"\x17RESTRICTION_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aNO_SEAT\x10\x01\x12\x11\n" +
 	"\rTRIAL_EXPIRED\x10\x02\x12\x17\n" +
-	"\x13PLAN_LIMITS_REACHED\x10\x032\x90\t\n" +
+	"\x13PLAN_LIMITS_REACHED\x10\x032\xff\t\n" +
 	"\rIdeateService\x12F\n" +
 	"\aAddNote\x12\x1b.alis.ideate.AddNoteRequest\x1a\x1c.alis.ideate.AddNoteResponse\"\x00\x12U\n" +
 	"\fAddAudioNote\x12 .alis.ideate.AddAudioNoteRequest\x1a!.alis.ideate.AddAudioNoteResponse\"\x00\x12g\n" +
 	"\x12AddMultiFileUpload\x12&.alis.ideate.AddMultiFileUploadRequest\x1a'.alis.ideate.AddMultiFileUploadResponse\"\x00\x12I\n" +
-	"\bAddAgent\x12\x1c.alis.ideate.AddAgentRequest\x1a\x1d.alis.ideate.AddAgentResponse\"\x00\x12v\n" +
+	"\bAddAgent\x12\x1c.alis.ideate.AddAgentRequest\x1a\x1d.alis.ideate.AddAgentResponse\"\x00\x12m\n" +
+	"\x14AddResearchInterview\x12(.alis.ideate.AddResearchInterviewRequest\x1a).alis.ideate.AddResearchInterviewResponse\"\x00\x12v\n" +
 	"\x17InitialiseAgentFeedback\x12+.alis.ideate.InitialiseAgentFeedbackRequest\x1a,.alis.ideate.InitialiseAgentFeedbackResponse\"\x00\x12;\n" +
 	"\aGetIdea\x12\x1b.alis.ideate.GetIdeaRequest\x1a\x11.alis.ideate.Idea\"\x00\x12A\n" +
 	"\tGetStream\x12\x1d.alis.ideate.GetStreamRequest\x1a\x13.alis.ideate.Stream\"\x00\x12;\n" +
@@ -2378,7 +2527,7 @@ func file_alis_ideate_ideate_proto_rawDescGZIP() []byte {
 }
 
 var file_alis_ideate_ideate_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_alis_ideate_ideate_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_alis_ideate_ideate_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_alis_ideate_ideate_proto_goTypes = []any{
 	(TestIdeateAccessResponse_Restriction)(0),                    // 0: alis.ideate.TestIdeateAccessResponse.Restriction
 	(*AddNoteRequest)(nil),                                       // 1: alis.ideate.AddNoteRequest
@@ -2389,87 +2538,92 @@ var file_alis_ideate_ideate_proto_goTypes = []any{
 	(*AddMultiFileUploadResponse)(nil),                           // 6: alis.ideate.AddMultiFileUploadResponse
 	(*AddAgentRequest)(nil),                                      // 7: alis.ideate.AddAgentRequest
 	(*AddAgentResponse)(nil),                                     // 8: alis.ideate.AddAgentResponse
-	(*InitialiseAgentFeedbackRequest)(nil),                       // 9: alis.ideate.InitialiseAgentFeedbackRequest
-	(*InitialiseAgentFeedbackResponse)(nil),                      // 10: alis.ideate.InitialiseAgentFeedbackResponse
-	(*TestIdeateAccessRequest)(nil),                              // 11: alis.ideate.TestIdeateAccessRequest
-	(*TestIdeateAccessResponse)(nil),                             // 12: alis.ideate.TestIdeateAccessResponse
-	(*AddMultiFileUploadRequest_File)(nil),                       // 13: alis.ideate.AddMultiFileUploadRequest.File
-	(*AddMultiFileUploadResponse_File)(nil),                      // 14: alis.ideate.AddMultiFileUploadResponse.File
-	(*InitialiseAgentFeedbackRequest_AgentInteraction)(nil),      // 15: alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction
-	(*InitialiseAgentFeedbackRequest_Note)(nil),                  // 16: alis.ideate.InitialiseAgentFeedbackRequest.Note
-	(*InitialiseAgentFeedbackRequest_AudioNote)(nil),             // 17: alis.ideate.InitialiseAgentFeedbackRequest.AudioNote
-	(*InitialiseAgentFeedbackRequest_MultiFileUpload)(nil),       // 18: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload
-	(*InitialiseAgentFeedbackRequest_MultiFileUpload_File)(nil),  // 19: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.File
-	(*InitialiseAgentFeedbackResponse_Note)(nil),                 // 20: alis.ideate.InitialiseAgentFeedbackResponse.Note
-	(*InitialiseAgentFeedbackResponse_AudioNote)(nil),            // 21: alis.ideate.InitialiseAgentFeedbackResponse.AudioNote
-	(*InitialiseAgentFeedbackResponse_MultiFileUpload)(nil),      // 22: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
-	(*InitialiseAgentFeedbackResponse_MultiFileUpload_File)(nil), // 23: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
-	(*Stream)(nil),                           // 24: alis.ideate.Stream
-	(*AgentCard)(nil),                        // 25: alis.ideate.AgentCard
-	(*GetIdeaRequest)(nil),                   // 26: alis.ideate.GetIdeaRequest
-	(*GetStreamRequest)(nil),                 // 27: alis.ideate.GetStreamRequest
-	(*GetSpecRequest)(nil),                   // 28: alis.ideate.GetSpecRequest
-	(*RetrieveIdeaSpecsRequest)(nil),         // 29: alis.ideate.RetrieveIdeaSpecsRequest
-	(*GenerateCustomAgentSpecRequest)(nil),   // 30: alis.ideate.GenerateCustomAgentSpecRequest
-	(*GenerateAgentFeedbackSpecRequest)(nil), // 31: alis.ideate.GenerateAgentFeedbackSpecRequest
-	(*longrunning.GetOperationRequest)(nil),  // 32: google.longrunning.GetOperationRequest
-	(*Idea)(nil),                             // 33: alis.ideate.Idea
-	(*Spec)(nil),                             // 34: alis.ideate.Spec
-	(*RetrieveIdeaSpecsResponse)(nil),        // 35: alis.ideate.RetrieveIdeaSpecsResponse
-	(*longrunning.Operation)(nil),            // 36: google.longrunning.Operation
+	(*AddResearchInterviewRequest)(nil),                          // 9: alis.ideate.AddResearchInterviewRequest
+	(*AddResearchInterviewResponse)(nil),                         // 10: alis.ideate.AddResearchInterviewResponse
+	(*InitialiseAgentFeedbackRequest)(nil),                       // 11: alis.ideate.InitialiseAgentFeedbackRequest
+	(*InitialiseAgentFeedbackResponse)(nil),                      // 12: alis.ideate.InitialiseAgentFeedbackResponse
+	(*TestIdeateAccessRequest)(nil),                              // 13: alis.ideate.TestIdeateAccessRequest
+	(*TestIdeateAccessResponse)(nil),                             // 14: alis.ideate.TestIdeateAccessResponse
+	(*AddMultiFileUploadRequest_File)(nil),                       // 15: alis.ideate.AddMultiFileUploadRequest.File
+	(*AddMultiFileUploadResponse_File)(nil),                      // 16: alis.ideate.AddMultiFileUploadResponse.File
+	(*InitialiseAgentFeedbackRequest_AgentInteraction)(nil),      // 17: alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction
+	(*InitialiseAgentFeedbackRequest_Note)(nil),                  // 18: alis.ideate.InitialiseAgentFeedbackRequest.Note
+	(*InitialiseAgentFeedbackRequest_AudioNote)(nil),             // 19: alis.ideate.InitialiseAgentFeedbackRequest.AudioNote
+	(*InitialiseAgentFeedbackRequest_MultiFileUpload)(nil),       // 20: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload
+	(*InitialiseAgentFeedbackRequest_MultiFileUpload_File)(nil),  // 21: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.File
+	(*InitialiseAgentFeedbackResponse_Note)(nil),                 // 22: alis.ideate.InitialiseAgentFeedbackResponse.Note
+	(*InitialiseAgentFeedbackResponse_AudioNote)(nil),            // 23: alis.ideate.InitialiseAgentFeedbackResponse.AudioNote
+	(*InitialiseAgentFeedbackResponse_MultiFileUpload)(nil),      // 24: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
+	(*InitialiseAgentFeedbackResponse_MultiFileUpload_File)(nil), // 25: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
+	(*Stream)(nil),                           // 26: alis.ideate.Stream
+	(*AgentCard)(nil),                        // 27: alis.ideate.AgentCard
+	(*GetIdeaRequest)(nil),                   // 28: alis.ideate.GetIdeaRequest
+	(*GetStreamRequest)(nil),                 // 29: alis.ideate.GetStreamRequest
+	(*GetSpecRequest)(nil),                   // 30: alis.ideate.GetSpecRequest
+	(*RetrieveIdeaSpecsRequest)(nil),         // 31: alis.ideate.RetrieveIdeaSpecsRequest
+	(*GenerateCustomAgentSpecRequest)(nil),   // 32: alis.ideate.GenerateCustomAgentSpecRequest
+	(*GenerateAgentFeedbackSpecRequest)(nil), // 33: alis.ideate.GenerateAgentFeedbackSpecRequest
+	(*longrunning.GetOperationRequest)(nil),  // 34: google.longrunning.GetOperationRequest
+	(*Idea)(nil),                             // 35: alis.ideate.Idea
+	(*Spec)(nil),                             // 36: alis.ideate.Spec
+	(*RetrieveIdeaSpecsResponse)(nil),        // 37: alis.ideate.RetrieveIdeaSpecsResponse
+	(*longrunning.Operation)(nil),            // 38: google.longrunning.Operation
 }
 var file_alis_ideate_ideate_proto_depIdxs = []int32{
-	24, // 0: alis.ideate.AddNoteResponse.stream:type_name -> alis.ideate.Stream
-	24, // 1: alis.ideate.AddAudioNoteResponse.stream:type_name -> alis.ideate.Stream
-	13, // 2: alis.ideate.AddMultiFileUploadRequest.files:type_name -> alis.ideate.AddMultiFileUploadRequest.File
-	24, // 3: alis.ideate.AddMultiFileUploadResponse.stream:type_name -> alis.ideate.Stream
-	14, // 4: alis.ideate.AddMultiFileUploadResponse.files:type_name -> alis.ideate.AddMultiFileUploadResponse.File
-	25, // 5: alis.ideate.AddAgentRequest.agent_card:type_name -> alis.ideate.AgentCard
-	24, // 6: alis.ideate.AddAgentResponse.stream:type_name -> alis.ideate.Stream
-	15, // 7: alis.ideate.InitialiseAgentFeedbackRequest.agent_interaction:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction
-	16, // 8: alis.ideate.InitialiseAgentFeedbackRequest.note:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.Note
-	17, // 9: alis.ideate.InitialiseAgentFeedbackRequest.audio_note:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.AudioNote
-	18, // 10: alis.ideate.InitialiseAgentFeedbackRequest.multi_file_upload:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload
-	24, // 11: alis.ideate.InitialiseAgentFeedbackResponse.content_stream:type_name -> alis.ideate.Stream
-	24, // 12: alis.ideate.InitialiseAgentFeedbackResponse.agent_stream:type_name -> alis.ideate.Stream
-	20, // 13: alis.ideate.InitialiseAgentFeedbackResponse.note:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.Note
-	21, // 14: alis.ideate.InitialiseAgentFeedbackResponse.audio_note:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.AudioNote
-	22, // 15: alis.ideate.InitialiseAgentFeedbackResponse.multi_file_upload:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
-	0,  // 16: alis.ideate.TestIdeateAccessResponse.restriction:type_name -> alis.ideate.TestIdeateAccessResponse.Restriction
-	25, // 17: alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction.agent_card:type_name -> alis.ideate.AgentCard
-	19, // 18: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.files:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.File
-	23, // 19: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.files:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
-	1,  // 20: alis.ideate.IdeateService.AddNote:input_type -> alis.ideate.AddNoteRequest
-	3,  // 21: alis.ideate.IdeateService.AddAudioNote:input_type -> alis.ideate.AddAudioNoteRequest
-	5,  // 22: alis.ideate.IdeateService.AddMultiFileUpload:input_type -> alis.ideate.AddMultiFileUploadRequest
-	7,  // 23: alis.ideate.IdeateService.AddAgent:input_type -> alis.ideate.AddAgentRequest
-	9,  // 24: alis.ideate.IdeateService.InitialiseAgentFeedback:input_type -> alis.ideate.InitialiseAgentFeedbackRequest
-	26, // 25: alis.ideate.IdeateService.GetIdea:input_type -> alis.ideate.GetIdeaRequest
-	27, // 26: alis.ideate.IdeateService.GetStream:input_type -> alis.ideate.GetStreamRequest
-	28, // 27: alis.ideate.IdeateService.GetSpec:input_type -> alis.ideate.GetSpecRequest
-	29, // 28: alis.ideate.IdeateService.RetrieveIdeaSpecs:input_type -> alis.ideate.RetrieveIdeaSpecsRequest
-	30, // 29: alis.ideate.IdeateService.GenerateCustomAgentSpec:input_type -> alis.ideate.GenerateCustomAgentSpecRequest
-	31, // 30: alis.ideate.IdeateService.GenerateAgentFeedbackSpec:input_type -> alis.ideate.GenerateAgentFeedbackSpecRequest
-	11, // 31: alis.ideate.IdeateService.TestIdeateAccess:input_type -> alis.ideate.TestIdeateAccessRequest
-	32, // 32: alis.ideate.IdeateService.GetOperation:input_type -> google.longrunning.GetOperationRequest
-	2,  // 33: alis.ideate.IdeateService.AddNote:output_type -> alis.ideate.AddNoteResponse
-	4,  // 34: alis.ideate.IdeateService.AddAudioNote:output_type -> alis.ideate.AddAudioNoteResponse
-	6,  // 35: alis.ideate.IdeateService.AddMultiFileUpload:output_type -> alis.ideate.AddMultiFileUploadResponse
-	8,  // 36: alis.ideate.IdeateService.AddAgent:output_type -> alis.ideate.AddAgentResponse
-	10, // 37: alis.ideate.IdeateService.InitialiseAgentFeedback:output_type -> alis.ideate.InitialiseAgentFeedbackResponse
-	33, // 38: alis.ideate.IdeateService.GetIdea:output_type -> alis.ideate.Idea
-	24, // 39: alis.ideate.IdeateService.GetStream:output_type -> alis.ideate.Stream
-	34, // 40: alis.ideate.IdeateService.GetSpec:output_type -> alis.ideate.Spec
-	35, // 41: alis.ideate.IdeateService.RetrieveIdeaSpecs:output_type -> alis.ideate.RetrieveIdeaSpecsResponse
-	36, // 42: alis.ideate.IdeateService.GenerateCustomAgentSpec:output_type -> google.longrunning.Operation
-	36, // 43: alis.ideate.IdeateService.GenerateAgentFeedbackSpec:output_type -> google.longrunning.Operation
-	12, // 44: alis.ideate.IdeateService.TestIdeateAccess:output_type -> alis.ideate.TestIdeateAccessResponse
-	36, // 45: alis.ideate.IdeateService.GetOperation:output_type -> google.longrunning.Operation
-	33, // [33:46] is the sub-list for method output_type
-	20, // [20:33] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	26, // 0: alis.ideate.AddNoteResponse.stream:type_name -> alis.ideate.Stream
+	26, // 1: alis.ideate.AddAudioNoteResponse.stream:type_name -> alis.ideate.Stream
+	15, // 2: alis.ideate.AddMultiFileUploadRequest.files:type_name -> alis.ideate.AddMultiFileUploadRequest.File
+	26, // 3: alis.ideate.AddMultiFileUploadResponse.stream:type_name -> alis.ideate.Stream
+	16, // 4: alis.ideate.AddMultiFileUploadResponse.files:type_name -> alis.ideate.AddMultiFileUploadResponse.File
+	27, // 5: alis.ideate.AddAgentRequest.agent_card:type_name -> alis.ideate.AgentCard
+	26, // 6: alis.ideate.AddAgentResponse.stream:type_name -> alis.ideate.Stream
+	26, // 7: alis.ideate.AddResearchInterviewResponse.stream:type_name -> alis.ideate.Stream
+	17, // 8: alis.ideate.InitialiseAgentFeedbackRequest.agent_interaction:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction
+	18, // 9: alis.ideate.InitialiseAgentFeedbackRequest.note:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.Note
+	19, // 10: alis.ideate.InitialiseAgentFeedbackRequest.audio_note:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.AudioNote
+	20, // 11: alis.ideate.InitialiseAgentFeedbackRequest.multi_file_upload:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload
+	26, // 12: alis.ideate.InitialiseAgentFeedbackResponse.content_stream:type_name -> alis.ideate.Stream
+	26, // 13: alis.ideate.InitialiseAgentFeedbackResponse.agent_stream:type_name -> alis.ideate.Stream
+	22, // 14: alis.ideate.InitialiseAgentFeedbackResponse.note:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.Note
+	23, // 15: alis.ideate.InitialiseAgentFeedbackResponse.audio_note:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.AudioNote
+	24, // 16: alis.ideate.InitialiseAgentFeedbackResponse.multi_file_upload:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload
+	0,  // 17: alis.ideate.TestIdeateAccessResponse.restriction:type_name -> alis.ideate.TestIdeateAccessResponse.Restriction
+	27, // 18: alis.ideate.InitialiseAgentFeedbackRequest.AgentInteraction.agent_card:type_name -> alis.ideate.AgentCard
+	21, // 19: alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.files:type_name -> alis.ideate.InitialiseAgentFeedbackRequest.MultiFileUpload.File
+	25, // 20: alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.files:type_name -> alis.ideate.InitialiseAgentFeedbackResponse.MultiFileUpload.File
+	1,  // 21: alis.ideate.IdeateService.AddNote:input_type -> alis.ideate.AddNoteRequest
+	3,  // 22: alis.ideate.IdeateService.AddAudioNote:input_type -> alis.ideate.AddAudioNoteRequest
+	5,  // 23: alis.ideate.IdeateService.AddMultiFileUpload:input_type -> alis.ideate.AddMultiFileUploadRequest
+	7,  // 24: alis.ideate.IdeateService.AddAgent:input_type -> alis.ideate.AddAgentRequest
+	9,  // 25: alis.ideate.IdeateService.AddResearchInterview:input_type -> alis.ideate.AddResearchInterviewRequest
+	11, // 26: alis.ideate.IdeateService.InitialiseAgentFeedback:input_type -> alis.ideate.InitialiseAgentFeedbackRequest
+	28, // 27: alis.ideate.IdeateService.GetIdea:input_type -> alis.ideate.GetIdeaRequest
+	29, // 28: alis.ideate.IdeateService.GetStream:input_type -> alis.ideate.GetStreamRequest
+	30, // 29: alis.ideate.IdeateService.GetSpec:input_type -> alis.ideate.GetSpecRequest
+	31, // 30: alis.ideate.IdeateService.RetrieveIdeaSpecs:input_type -> alis.ideate.RetrieveIdeaSpecsRequest
+	32, // 31: alis.ideate.IdeateService.GenerateCustomAgentSpec:input_type -> alis.ideate.GenerateCustomAgentSpecRequest
+	33, // 32: alis.ideate.IdeateService.GenerateAgentFeedbackSpec:input_type -> alis.ideate.GenerateAgentFeedbackSpecRequest
+	13, // 33: alis.ideate.IdeateService.TestIdeateAccess:input_type -> alis.ideate.TestIdeateAccessRequest
+	34, // 34: alis.ideate.IdeateService.GetOperation:input_type -> google.longrunning.GetOperationRequest
+	2,  // 35: alis.ideate.IdeateService.AddNote:output_type -> alis.ideate.AddNoteResponse
+	4,  // 36: alis.ideate.IdeateService.AddAudioNote:output_type -> alis.ideate.AddAudioNoteResponse
+	6,  // 37: alis.ideate.IdeateService.AddMultiFileUpload:output_type -> alis.ideate.AddMultiFileUploadResponse
+	8,  // 38: alis.ideate.IdeateService.AddAgent:output_type -> alis.ideate.AddAgentResponse
+	10, // 39: alis.ideate.IdeateService.AddResearchInterview:output_type -> alis.ideate.AddResearchInterviewResponse
+	12, // 40: alis.ideate.IdeateService.InitialiseAgentFeedback:output_type -> alis.ideate.InitialiseAgentFeedbackResponse
+	35, // 41: alis.ideate.IdeateService.GetIdea:output_type -> alis.ideate.Idea
+	26, // 42: alis.ideate.IdeateService.GetStream:output_type -> alis.ideate.Stream
+	36, // 43: alis.ideate.IdeateService.GetSpec:output_type -> alis.ideate.Spec
+	37, // 44: alis.ideate.IdeateService.RetrieveIdeaSpecs:output_type -> alis.ideate.RetrieveIdeaSpecsResponse
+	38, // 45: alis.ideate.IdeateService.GenerateCustomAgentSpec:output_type -> google.longrunning.Operation
+	38, // 46: alis.ideate.IdeateService.GenerateAgentFeedbackSpec:output_type -> google.longrunning.Operation
+	14, // 47: alis.ideate.IdeateService.TestIdeateAccess:output_type -> alis.ideate.TestIdeateAccessResponse
+	38, // 48: alis.ideate.IdeateService.GetOperation:output_type -> google.longrunning.Operation
+	35, // [35:49] is the sub-list for method output_type
+	21, // [21:35] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_alis_ideate_ideate_proto_init() }
@@ -2512,6 +2666,9 @@ func file_alis_ideate_ideate_proto_init() {
 		(*AddAgentRequest_AgentCardUri)(nil),
 	}
 	file_alis_ideate_ideate_proto_msgTypes[8].OneofWrappers = []any{
+		(*AddResearchInterviewRequest_Idea)(nil),
+	}
+	file_alis_ideate_ideate_proto_msgTypes[10].OneofWrappers = []any{
 		(*InitialiseAgentFeedbackRequest_Account)(nil),
 		(*InitialiseAgentFeedbackRequest_Idea)(nil),
 		(*InitialiseAgentFeedbackRequest_Token)(nil),
@@ -2520,12 +2677,12 @@ func file_alis_ideate_ideate_proto_init() {
 		(*InitialiseAgentFeedbackRequest_AudioNote_)(nil),
 		(*InitialiseAgentFeedbackRequest_MultiFileUpload_)(nil),
 	}
-	file_alis_ideate_ideate_proto_msgTypes[9].OneofWrappers = []any{
+	file_alis_ideate_ideate_proto_msgTypes[11].OneofWrappers = []any{
 		(*InitialiseAgentFeedbackResponse_Note_)(nil),
 		(*InitialiseAgentFeedbackResponse_AudioNote_)(nil),
 		(*InitialiseAgentFeedbackResponse_MultiFileUpload_)(nil),
 	}
-	file_alis_ideate_ideate_proto_msgTypes[14].OneofWrappers = []any{
+	file_alis_ideate_ideate_proto_msgTypes[16].OneofWrappers = []any{
 		(*InitialiseAgentFeedbackRequest_AgentInteraction_AgentCard)(nil),
 		(*InitialiseAgentFeedbackRequest_AgentInteraction_AgentCardUri)(nil),
 	}
@@ -2535,7 +2692,7 @@ func file_alis_ideate_ideate_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alis_ideate_ideate_proto_rawDesc), len(file_alis_ideate_ideate_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   23,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
