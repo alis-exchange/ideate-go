@@ -3,7 +3,7 @@
 // Source: alis/ideate/agent_card.proto
 // Plugin version: v0.0.1
 //
-// Generated on: 2026-06-27 13:44:00 UTC
+// Generated on: 2026-06-28 19:20:39 UTC
 
 package ideate
 
